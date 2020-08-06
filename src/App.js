@@ -1,46 +1,25 @@
 import React from 'react'
 import { BrowserRouter, Switch, Route, Link, Redirect } from 'react-router-dom'
-
-import Login from './views/Login/index'
-import SelectClass from './views/SelectClass/index'
-import StudentHome from './views/StudentHome/index'
+import Cookie from 'js-cookie'
 
 import './assets/css/react.css'
-import { fakeAuth } from './config.js'
+import { router } from './router.js'
 
 const App = () => {
 	return (
 		<BrowserRouter>
-			<Switch>
-				<Route path="/login">
-					<Login {...fakeAuth} />
-				</Route>
-				<PrivateRoute path="/select-class">
-					<SelectClass {...fakeAuth} />
-				</PrivateRoute>
-				<PrivateRoute path="/student-home">
-					<StudentHome {...fakeAuth} />
-				</PrivateRoute>
-			</Switch>
+			<Switch>{router.map((route, i) => <SubRoutes key={i} {...route} />)}</Switch>
 		</BrowserRouter>
 	)
 }
-const PrivateRoute = ({ children, ...rest }) => {
-	return (
-		<Route
-			{...rest}
-			render={({ location }) =>
-				fakeAuth.isAuthenticated ? (
-					children
-				) : (
-					<Redirect
-						to={{
-							pathname: '/login',
-							state: { from: location }
-						}}
-					/>
-				)}
-		/>
+
+const SubRoutes = (route) => {
+	let isBool = !route.requireAuth||!!Cookie.get('CGB-BP-USER')
+
+	return isBool ? (
+		<Route path={route.path} render={(props) => <route.component {...props} routes={route.routes} />} />
+	) : (
+		<Redirect to="/login" />
 	)
 }
 

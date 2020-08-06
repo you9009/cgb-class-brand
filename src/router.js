@@ -1,18 +1,30 @@
 import Login from './views/Login/index'
 import SelectClass from './views/SelectClass/index'
 import StudentHome from './views/StudentHome/index'
+import GradeHome from './views/GradeHome/index'
 
 export const router = [
 	{
 		path: '/login',
+		name: 'Login',
 		component: Login
 	},
 	{
 		path: '/select-class',
-		component: SelectClass
+		name: 'SelectClass',
+		component: SelectClass,
+		requireAuth: true
+	},
+	{
+		path: '/grade-home',
+		name: 'GradeHome',
+		component: GradeHome,
+		requireAuth: true
 	},
 	{
 		path: '/student-home',
-		component: StudentHome
-	},
+		name: 'StudentHome',
+		component: StudentHome,
+		requireAuth: true
+	}
 ]
