@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { BrowserRouter, Switch, Route, Link, Redirect } from 'react-router-dom'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Login from './views/Login/index'
+import SelectClass from './views/SelectClass/index'
+import StudentHome from './views/StudentHome/index'
+
+import './assets/css/react.css'
+import { fakeAuth } from './config.js'
+
+const App = () => {
+	return (
+		<BrowserRouter>
+			<Switch>
+				<Route path="/login">
+					<Login {...fakeAuth} />
+				</Route>
+				<PrivateRoute path="/select-class">
+					<SelectClass {...fakeAuth} />
+				</PrivateRoute>
+				<PrivateRoute path="/student-home">
+					<StudentHome {...fakeAuth} />
+				</PrivateRoute>
+			</Switch>
+		</BrowserRouter>
+	)
+}
+const PrivateRoute = ({ children, ...rest }) => {
+	return (
+		<Route
+			{...rest}
+			render={({ location }) =>
+				fakeAuth.isAuthenticated ? (
+					children
+				) : (
+					<Redirect
+						to={{
+							pathname: '/login',
+							state: { from: location }
+						}}
+					/>
+				)}
+		/>
+	)
 }
 
-export default App;
+export default App
