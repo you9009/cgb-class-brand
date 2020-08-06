@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 
 const Login = (props) => {
@@ -10,26 +10,6 @@ const Login = (props) => {
 	let loginTo = () => {
 		props.signIn({ fn: () => history.replace(from), data: { key: 111 } })
 	}
-
-	const requireAuth = useCallback(
-		() => {
-			if (props.isAuthenticated) {
-				history.replace(from)
-			}
-		},
-		[ from, history, props.isAuthenticated ]
-	)
-
-	useEffect(
-		() => {
-			const auth = requireAuth()
-			window.addEventListener('load', auth)
-			return () => {
-				window.addEventListener('load', auth)
-			}
-		},
-		[requireAuth]
-	)
 
 	return (
 		<div>
