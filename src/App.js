@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Redirect, useLocation } from 'react-router-dom'
 import Cookie from 'js-cookie'
 
 import './assets/css/react.css'
@@ -8,10 +8,15 @@ import { router } from './router.js'
 const App = () => {
 	return (
 		<BrowserRouter>
-			{/* <Redirect exact from="/" to="/login" /> */}
+			<ToLogin />
 			<Switch>{router.map((route, i) => <SubRoutes key={i} {...route} />)}</Switch>
 		</BrowserRouter>
 	)
+}
+
+const ToLogin = () => {
+	let location = useLocation()
+	return location.pathname === '/' ? <Redirect exact from="/" to="/login" /> : null
 }
 
 const SubRoutes = (route) => {

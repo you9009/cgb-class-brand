@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import echarts from 'echarts'
 
 import styles from './index.module.css'
 import StudentInfo from './../StudentInfo/index'
@@ -81,10 +82,251 @@ const comments = [
 	}
 ]
 
+const data = [
+	{
+		name: '孟子',
+		value: 1,
+		pic: require('./../../assets/img/shalou_icon.png'),
+		itemStyle: {
+			color: '#5e9a80'
+		}
+	},
+	{
+		name: '大学',
+		value: 1,
+		itemStyle: {
+			color: '#3aa255'
+		}
+	},
+	{
+		name: '中庸',
+		value: 1,
+		itemStyle: {
+			color: '#5e9a80'
+		}
+	},
+	{
+		name: '书经（尚书）',
+		value: 1,
+		itemStyle: {
+			color: '#3aa255'
+		}
+	},
+	{
+		name: '礼记',
+		value: 1,
+		itemStyle: {
+			color: '#5e9a80'
+		}
+	},
+	{
+		name: '易经',
+		value: 1,
+		itemStyle: {
+			color: '#3aa255'
+		}
+	},
+	{
+		name: '诗经',
+		value: 1,
+		itemStyle: {
+			color: '#5e9a80'
+		}
+	},
+	{
+		name: '战国策',
+		value: 1,
+		itemStyle: {
+			color: '#FFDEAD'
+		}
+	},
+	{
+		name: '左传',
+		value: 1,
+		itemStyle: {
+			color: '#EEDC82'
+		}
+	},
+	{
+		name: '史记',
+		value: 1,
+		itemStyle: {
+			color: '#FFDEAD'
+		}
+	},
+	{
+		name: '孟子',
+		value: 1,
+		itemStyle: {
+			color: '#5e9a80'
+		}
+	},
+	{
+		name: '大学',
+		value: 1,
+		itemStyle: {
+			color: '#3aa255'
+		}
+	},
+	{
+		name: '中庸',
+		value: 1,
+		itemStyle: {
+			color: '#5e9a80'
+		}
+	},
+	{
+		name: '书经（尚书）',
+		value: 1,
+		itemStyle: {
+			color: '#3aa255'
+		}
+	},
+	{
+		name: '礼记',
+		value: 1,
+		itemStyle: {
+			color: '#5e9a80'
+		}
+	},
+	{
+		name: '易经',
+		value: 1,
+		itemStyle: {
+			color: '#3aa255'
+		}
+	},
+	{
+		name: '诗经',
+		value: 1,
+		itemStyle: {
+			color: '#5e9a80'
+		}
+	},
+	{
+		name: '战国策',
+		value: 1,
+		itemStyle: {
+			color: '#FFDEAD'
+		}
+	},
+	{
+		name: '左传',
+		value: 1,
+		itemStyle: {
+			color: '#EEDC82'
+		}
+	},
+	{
+		name: '史记',
+		value: 1,
+		itemStyle: {
+			color: '#FFDEAD'
+		}
+	},
+	{
+		name: '孟子',
+		value: 1,
+		itemStyle: {
+			color: '#5e9a80'
+		}
+	},
+	{
+		name: '大学',
+		value: 1,
+		itemStyle: {
+			color: '#3aa255'
+		}
+	},
+	{
+		name: '中庸',
+		value: 1,
+		itemStyle: {
+			color: '#5e9a80'
+		}
+	},
+	{
+		name: '书经（尚书）',
+		value: 1,
+		itemStyle: {
+			color: '#3aa255'
+		}
+	},
+	{
+		name: '礼记',
+		value: 1,
+		itemStyle: {
+			color: '#5e9a80'
+		}
+	},
+	{
+		name: '易经',
+		value: 1,
+		itemStyle: {
+			color: '#3aa255'
+		}
+	},
+	{
+		name: '诗经',
+		value: 1,
+		itemStyle: {
+			color: '#5e9a80'
+		}
+	},
+	{
+		name: '战国策',
+		value: 1,
+		itemStyle: {
+			color: '#FFDEAD'
+		}
+	},
+	{
+		name: '左传',
+		value: 1,
+		itemStyle: {
+			color: '#EEDC82'
+		}
+	},
+	{
+		name: '史记',
+		value: 1,
+		itemStyle: {
+			color: '#FFDEAD'
+		}
+	}
+]
+
+const options = {
+	animation: false,
+	series: {
+		type: 'sunburst',
+		highlightPolicy: 'ancestor',
+		data: data,
+		sort: null,
+		label: {
+			position: 'outside',
+			rotate: 'radial',
+			distance: 10,
+			formatter: [ '{a|} {b}' ].join('\n'),
+			rich: {
+				a: {
+					backgroundColor: {
+						image: require('./../../assets/img/shalou_icon.png')
+					}
+				}
+			}
+		}
+	}
+}
+
 const StudentHome = () => {
 	const [ menu, setMenu ] = useState(menuList)
 	const [ commentList, setCommentList ] = useState(comments)
 	const [ activeMenu, setaActiveMenu ] = useState(null)
+
+	useEffect(() => {
+		echarts.init(document.getElementById('student-home')).setOption(options)
+	}, [])
 
 	return (
 		<div className={styles['student-home']}>
@@ -125,9 +367,7 @@ const StudentHome = () => {
 				</div>
 				<div className={styles['middle']}>
 					<div className={styles['echarts-box']}>
-						<div className={styles['echarts']}>
-							<p>这里是个echarts</p>
-						</div>
+						<div className={styles['echarts']} id="student-home" />
 						<ul className={styles['cut-box']}>
 							<li>
 								<img src={require('./../../assets/img/xuanzhuan_zuo_btn.png')} alt="上一项" />

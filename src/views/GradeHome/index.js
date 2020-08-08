@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
+import echarts from 'echarts'
 
 import PhotoAlbum from './../PhotoAlbum'
 
@@ -396,13 +397,41 @@ const rank = [
 	}
 ]
 
+const options = {
+	animation: false,
+	grid: {
+		left: '2%',
+		right: '2%',
+		bottom: '5%',
+		top: '4%',
+		containLabel: true
+	},
+	xAxis: {
+		type: 'category',
+		data: [ 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun' ]
+	},
+	yAxis: {
+		type: 'value'
+	},
+	series: [
+		{
+			data: [ 820, 932, 901, 934, 1290, 1330, 1320 ],
+			type: 'line'
+		}
+	]
+}
+
 const GradeHome = () => {
 	let history = useHistory()
 	const [ colorList, setColorList ] = useState(colors)
 	const [ commentList, setCommentList ] = useState(comments)
 	const [ rankTitle, setRankTitle ] = useState(rank)
 	const [ selectRank, setSelectRank ] = useState(rankTitle[0].list)
-	const [photoAlbum, SetPhotoAlbum] = useState(false)
+	const [ photoAlbum, SetPhotoAlbum ] = useState(false)
+
+	useEffect(() => {
+		echarts.init(document.getElementById('grade-home')).setOption(options)
+	}, [])
 
 	const linkToStudent = () => {
 		history.push('/student-home')
@@ -472,7 +501,7 @@ const GradeHome = () => {
 						<div className={styles['title']}>
 							获章总量 <span>257</span> 枚
 						</div>
-						<div className={styles['main']}>
+						<div className={styles['main']} id="grade-home">
 							<p>这里是个echarts</p>
 						</div>
 					</div>
@@ -511,7 +540,7 @@ const GradeHome = () => {
 			</div>
 
 			{/* 班级相册 */}
-			{photoAlbum ? <PhotoAlbum closeModal={()=>SetPhotoAlbum(false)} /> : null}
+			{photoAlbum ? <PhotoAlbum closeModal={() => SetPhotoAlbum(false)} /> : null}
 		</div>
 	)
 }
