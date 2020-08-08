@@ -1,0 +1,296 @@
+.header-wrap {
+  display: flex;
+  flex-direction: row;
+  margin-top: 40px;
+
+  align-items: center;
+  justify-content: space-between;
+  .logo-pic {
+    width: 528.5px;
+    height: 68px;
+  }
+  .student-msg {
+    display: flex;
+    flex-direction: row;
+    width: 333.5px;
+    height: 133.5px;
+    background: url('./../../assets/img/geren_bg.png') 0 0 no-repeat;
+    background-size: 100% 100%;
+
+    align-items: center;
+    img {
+      width: 112.5px;
+      height: 112.5px;
+      margin: 9px 11px;
+      border-radius: 100%;
+    }
+    .msg {
+      margin-top: -20px;
+      margin-left: 25px;
+      p {
+        font-family: WenYue-XinQingNianTi-NC-W8;
+        font-size: 30px;
+        line-height: 1;
+        margin-top: 10px;
+        color: #5666a5;
+      }
+    }
+  }
+}
+
+.main-wrap {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+  .left {
+    position: relative;
+    ul {
+      li {
+        margin-top: -10px;
+        cursor: pointer;
+        img {
+          width: 308px;
+          height: 162.5px;
+        }
+        &:nth-child(1) {
+          margin-left: 150px;
+        }
+        &:nth-child(2) {
+          margin-left: 75px;
+        }
+        &:nth-child(3) {
+          margin-left: 0;
+        }
+        &:nth-child(4) {
+          margin-left: 75px;
+        }
+        &:nth-child(5) {
+          margin-left: 150px;
+        }
+      }
+    }
+    a {
+      position: absolute;
+      bottom: -30px;
+      left: 0;
+      img {
+        width: 94px;
+        height: auto;
+      }
+    }
+  }
+  .middle {
+    .echarts-box {
+      position: relative;
+      width: 796.5px;
+      height: 688px;
+      .cut-box {
+        width: 100%;
+        li {
+          position: absolute;
+          bottom: 40px;
+          width: 94px;
+          cursor: pointer;
+          &:nth-child(1) {
+            left: 0;
+          }
+          &:nth-child(2) {
+            right: 0;
+          }
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+      }
+      .echarts {
+        width: 672px;
+        height: 100%;
+        margin: 0 auto;
+        background-color: #fc0;
+        p {
+          font-size: 30px;
+          text-align: center;
+          color: #fff;
+        }
+      }
+    }
+    .select-brand {
+      display: flex;
+      flex-direction: row;
+      margin-top: -18px;
+
+      align-items: center;
+      .brand-wrap {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: row;
+        width: 182.5px;
+        height: 175px;
+        background: url('./../../assets/img/huizhang_bg.png') 0 0 no-repeat;
+        background-size: 100% 100%;
+
+        align-items: center;
+        justify-content: center;
+        img {
+          width: 110px;
+          height: 110px;
+          margin-left: -10px;
+        }
+      }
+      .info {
+        position: relative;
+        margin-left: -30px;
+        padding: 20px 0;
+        padding-right: 20px;
+        padding-left: 58px;
+        background-color: rgba(31, 59, 110, .6);
+        .right-radius {
+          position: absolute;
+          top: 21px;
+          right: 0;
+          height: 100%;
+          transform: rotate(45deg);
+          &::after {
+            position: absolute;
+            top: 0;
+            right: -20px;
+            width: 0;
+            height: 0;
+            content: '';
+            border-width: 35px;
+            border-style: solid;
+            border-color: rgba(31, 59, 110, .6) rgba(31, 59, 110, .6) transparent transparent;
+            border-top-right-radius: 10px;
+          }
+        }
+        .name {
+          font-size: 20px;
+          font-weight: bold;
+          color: #5ec3e9;
+        }
+        .num {
+          display: flex;
+          flex-direction: row;
+          margin-top: 10px;
+
+          align-items: center;
+          li {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 25px;
+            color: #fff;
+            &:last-child {
+              margin-right: 0;
+            }
+            span {
+              color: #5ec3e9;
+            }
+          }
+        }
+        .star {
+          position: absolute;
+          top: -6px;
+          right: -6px;
+          width: 16px;
+          height: auto;
+        }
+      }
+    }
+  }
+  .right {
+    width: 595px;
+    height: 780px;
+    background: url('./../../assets/img/paihang_bg.png') 0 0 no-repeat;
+    background-size: 100% 100%;
+    .title-box {
+      padding-top: 18px;
+      text-align: center;
+      .today {
+        font-family: WenYue-XinQingNianTi-NC-W8;
+        font-size: 30px;
+        line-height: 1;
+        color: #fff;
+        text-shadow: 0 2px 0 #060b4e;
+      }
+      .total {
+        font-family: WenYue-XinQingNianTi-NC-W8;
+        font-size: 24px;
+        line-height: 1;
+        margin-top: 10px;
+        color: #65c4e7;
+        text-shadow: 0 2px 0 #060b4e;
+      }
+    }
+    .main {
+      overflow-y: auto;
+      height: 605px;
+      margin-top: 40px;
+      margin-right: 46px;
+      margin-left: 42px;
+      .item {
+        display: flex;
+        flex-direction: row;
+        width: 478px;
+        height: 190px;
+        margin-bottom: 20px;
+        background: url('./../../assets/img/list_bg.png') 0 0 no-repeat;
+        background-size: 100% 100%;
+
+        align-items: flex-start;
+
+        .brand {
+          width: 80px;
+          height: 78.5px;
+          margin-top: 15px;
+          margin-left: 15px;
+        }
+        .info-box {
+          width: 346.5px;
+          margin-top: 25px;
+          margin-left: 16px;
+          .time {
+            font-size: 15px;
+            font-weight: bold;
+            color: #b3bee9;
+          }
+          .text {
+            font-size: 16px;
+            margin-top: 9px;
+            color: #b3bee9;
+            span {
+              color: #5ec3e9;
+            }
+          }
+          .pic-box {
+            overflow-x: auto;
+            width: 100%;
+            margin-top: 17px;
+            padding-bottom: 8px;
+            white-space: nowrap;
+
+            li {
+              display: inline-block;
+              width: 104px;
+              height: 59px;
+              margin-left: 10px;
+              text-align: center;
+              border: 3px solid rgba(255, 255, 255, .2);
+              border-radius: 5px;
+              background-color: #5365aa;
+              &:first-child {
+                margin-left: 0;
+              }
+              img {
+                width: 100%;
+                height: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

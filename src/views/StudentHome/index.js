@@ -1,14 +1,188 @@
-import React from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
+import styles from './index.module.css'
+import StudentInfo from './../StudentInfo/index'
+
+const menuList = [
+	{
+		name: '品德之光',
+		pic: require('./../../assets/img/pingde_btn.png')
+	},
+	{
+		name: '活力之光',
+		pic: require('./../../assets/img/huoli_btn.png')
+	},
+	{
+		name: '悦美之光',
+		pic: require('./../../assets/img/yuemei_btn.png')
+	},
+	{
+		name: '智慧之光',
+		pic: require('./../../assets/img/zhihu_btn.png')
+	},
+	{
+		name: '实践之光',
+		pic: require('./../../assets/img/shijian_btn.png')
+	}
+]
+const comments = [
+	{
+		band: '规范书写1',
+		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
+		time: '2020年8月7日10:34:43',
+		text: '张欢欢老师给你颁发了【规范书写】徽章，评语“你今天书写非常认真，继续加油！”',
+		pic_box: [
+			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
+			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
+			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
+			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg'
+		]
+	},
+	{
+		band: '规范书写2',
+		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
+		time: '2020年8月7日10:34:43',
+		text: '张欢欢老师给你颁发了【规范书写】徽章，评语“你今天书写非常认真，继续加油！”',
+		pic_box: [
+			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
+			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
+			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg'
+		]
+	},
+	{
+		band: '规范书写3',
+		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
+		time: '2020年8月7日10:34:43',
+		text: '张欢欢老师给你颁发了【规范书写】徽章，评语“你今天书写非常认真，继续加油！”',
+		pic_box: [
+			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
+			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg'
+		]
+	},
+	{
+		band: '规范书写4',
+		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
+		time: '2020年8月7日10:34:43',
+		text: '张欢欢老师给你颁发了【规范书写】徽章，评语“你今天书写非常认真，继续加油！”',
+		pic_box: [ 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg' ]
+	},
+	{
+		band: '规范书写5',
+		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
+		time: '2020年8月7日10:34:43',
+		text: '张欢欢老师给你颁发了【规范书写】徽章，评语“你今天书写非常认真，继续加油！”',
+		pic_box: []
+	}
+]
 
 const StudentHome = () => {
-	let history = useHistory()
+	const [ menu, setMenu ] = useState(menuList)
+	const [ commentList, setCommentList ] = useState(comments)
+	const [ activeMenu, setaActiveMenu ] = useState(false)
 
 	return (
-		<div>
-			<h1>this is StudentHome</h1>
-			<Link to="/select-class">select-class</Link>
+		<div className={styles['student-home']}>
+			{/* 顶部信息区 */}
+			<div className={styles['header-wrap']}>
+				<img
+					className={styles['logo-pic']}
+					src={require('./../../assets/img/logo_pic.png')}
+					alt="上海市黄浦区曹光彪小学"
+				/>
+				<div className={styles['student-msg']}>
+					<img src="http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg" alt="高伊伊" />
+					<div className={styles['msg']}>
+						<p>高伊伊</p>
+						<p>三年级3班</p>
+					</div>
+				</div>
+			</div>
+			{/* 内容区 */}
+			<div className={styles['main-wrap']}>
+				<div className={styles['left']}>
+					<ul>
+						{menu.map((item, index) => (
+							<li key={index} onClick={() => setaActiveMenu(true)}>
+								<img src={item.pic} alt={item.name} />
+							</li>
+						))}
+					</ul>
+					<Link to="/grade-home">
+						<img src={require('./../../assets/img/shouye _btn.png')} alt="班级主页" />
+					</Link>
+				</div>
+				<div className={styles['middle']}>
+					<div className={styles['echarts-box']}>
+						<div className={styles['echarts']}>
+							<p>这里是个echarts</p>
+						</div>
+						<ul className={styles['cut-box']}>
+							<li>
+								<img src={require('./../../assets/img/xuanzhuan_zuo_btn.png')} alt="上一项" />
+							</li>
+							<li>
+								<img src={require('./../../assets/img/xuanzhuan_you_btn.png')} alt="下一项" />
+							</li>
+						</ul>
+					</div>
+					<div className={styles['select-brand']}>
+						<div className={styles['brand-wrap']}>
+							<img src="http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg" alt="徽章名字" />
+						</div>
+						<div className={styles['info']}>
+							<div className={styles['name']}>【保护自然】徽章</div>
+							<ul className={styles['num']}>
+								<li>
+									本学期已获得<span>12</span>次
+								</li>
+								<li>
+									共有<span>2</span>位老师颁发
+								</li>
+								<li>
+									班级同学平均获得<span>8</span>次
+								</li>
+							</ul>
+							<div className={styles['right-radius']} />
+							<img
+								className={styles['star']}
+								src={require('./../../assets/img/guang_xiao_pic.png')}
+								alt="星星"
+							/>
+						</div>
+					</div>
+				</div>
+				<div className={styles['right']}>
+					<div className={styles['title-box']}>
+						<div className={styles['today']}>今日获得徽章 8枚</div>
+						<div className={styles['total']}>累计获得 120枚</div>
+					</div>
+					<div className={styles['main']}>
+						{commentList.map((item, index) => {
+							return (
+								<div key={index} className={styles['item']}>
+									<img className={styles['brand']} src={item.brand_pic} alt={item.brand} />
+									<div className={styles['info-box']}>
+										<div className={styles['time']}>{item.time}</div>
+										<div className={styles['text']}>{item.text}</div>
+										<ul className={styles['pic-box']}>
+											{item.pic_box.map((e, i) => {
+												return (
+													<li key={i}>
+														<img src={e} alt="" />
+													</li>
+												)
+											})}
+										</ul>
+									</div>
+								</div>
+							)
+						})}
+					</div>
+				</div>
+			</div>
+			{/* 弹窗 */}
+			{activeMenu ? <StudentInfo onClick={() => setaActiveMenu(false)} /> : null}
 		</div>
 	)
 }

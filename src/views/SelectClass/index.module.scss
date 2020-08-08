@@ -110,9 +110,14 @@
     font-size: 30px;
     width: 560px;
     padding: 16px 0;
+    transition: all .3s ease-in-out;
     text-align: center;
     color: #fff;
     border-radius: 20px;
+    background-color: #d2d2d2;
+    box-shadow: 0 12px 0 0 #a6a6a6;
+  }
+  .active {
     background-color: #7c8ed8;
     box-shadow: 0 12px 0 0 #6275c1;
   }

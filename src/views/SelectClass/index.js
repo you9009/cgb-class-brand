@@ -85,6 +85,15 @@ const SelectClass = () => {
 	const [ schoolActive, setSchoolActive ] = useState({})
 	const [ gradeActive, setGradeActive ] = useState({})
 	const [ classActive, setClassActive ] = useState({})
+	const [ active, setActive ] = useState(false)
+
+	// 监控选择
+	useEffect(
+		() => {
+			setActive(!!schoolActive.name && !!gradeActive.name && !!classActive.name)
+		},
+		[ classActive, gradeActive, schoolActive ]
+	)
 
 	const getType = (name) => {
 		if (name === '校区') {
@@ -116,17 +125,8 @@ const SelectClass = () => {
 			grade: gradeActive,
 			class: classActive
 		}
-		let isBool = true
-		for (const k in key) {
-			if (key.hasOwnProperty(k)) {
-				const element = key[k]
-				if (!element.name) {
-					isBool = false
-				}
-			}
-		}
-		if (isBool) {
-			history.replace('/grade-home')
+		if (active) {
+			history.push('/grade-home')
 		}
 	}
 
@@ -158,7 +158,9 @@ const SelectClass = () => {
 				<div className={styles['grade-name']}>
 					{schoolActive.name}-{gradeActive.name}-{classActive.name}
 				</div>
-				<button onClick={submit}>确定</button>
+				<button onClick={submit} className={active ? styles['active'] : ''}>
+					确定
+				</button>
 			</div>
 		</div>
 	)

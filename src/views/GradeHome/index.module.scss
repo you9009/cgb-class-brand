@@ -34,8 +34,8 @@
       height: 63px;
     }
     span {
-      font-family: MicrosoftYaHei-Bold;
       font-size: 26px;
+      font-weight: bold;
       margin-left: -6px;
       padding: 13px 43px;
       color: #fff;
@@ -53,14 +53,13 @@
 
     align-items: center;
     .time {
-      font-family: MicrosoftYaHei-Bold;
       font-size: 45px;
+      font-weight: bold;
       color: #fff;
     }
     .day {
       margin-left: 18.5px;
       p {
-        font-family: MicrosoftYaHei;
         font-size: 17px;
         line-height: 1;
         color: #fff;
@@ -106,8 +105,9 @@
 .grade-box {
   display: flex;
   flex-direction: row;
+  width: 1771px;
+  margin: 0 auto;
   margin-top: 31px;
-  margin-left: 105px;
 
   align-items: flex-start;
 }
@@ -115,17 +115,67 @@
 .grade-left {
   .top {
     width: 550px;
-    height: 419px;
-    padding-top: 20px;
+    height: 426px;
     background: url('./../../assets/img/rongyu_bg.png') 0 0 no-repeat;
     background-size: 100% 100%;
     .title {
       font-family: WenYue-XinQingNianTi-NC-W8;
       font-size: 30px;
       margin-left: 70px;
+      padding-top: 20px;
       text-align: center;
       color: #566dc3;
       text-shadow: 0 2px 0 #060b4e;
+    }
+    .main {
+      width: 462.5px;
+      margin: 0 auto;
+      margin-top: 35px;
+      ul {
+        display: flex;
+        flex-direction: row;
+        padding-bottom: 10px;
+        border-bottom: 4px solid rgba(255, 255, 255, .1);
+
+        flex-wrap: wrap;
+        li {
+          font-size: 19px;
+          font-weight: bold;
+          width: 130px;
+          margin: 4px 10px;
+          padding: 16px 0;
+          cursor: pointer;
+          transition: all .3s ease-in-out;
+          text-align: center;
+          color: #fefefe;
+          border-radius: 9px;
+        }
+        .active {
+          background-color: #fe566f;
+          box-shadow: inset -5px -5px 0 0 rgba(10, 1, 3, .1);
+        }
+      }
+      .student-list {
+        display: flex;
+        overflow-x: auto;
+        flex-direction: row;
+        margin-top: 32px;
+        padding-bottom: 22px;
+        .item {
+          margin: 0 14px;
+          img {
+            width: 75px;
+            height: 75px;
+            border: 3px solid #566dc3;
+            border-radius: 50%;
+          }
+          .name {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #b3bee9;
+          }
+        }
+      }
     }
   }
   .card {
@@ -140,8 +190,8 @@
     background-color: #060b4e;
     background-size: auto 80%;
     p {
-      font-family: MicrosoftYaHei-Bold;
       font-size: 18px;
+      font-weight: bold;
       line-height: 2;
       color: #b3bee9;
     }
@@ -149,18 +199,19 @@
 }
 
 .grade-middle {
+  margin-right: 33px;
   margin-left: 33px;
   .top {
     width: 560px;
     height: 327px;
-    margin-bottom: 25px;
-    padding-top: 20px;
+    padding: 0 26px;
     background: url('./../../assets/img/jiangzhang_bg.png') 0 0 no-repeat;
     background-size: 100% 100%;
     .title {
       font-family: WenYue-XinQingNianTi-NC-W8;
       font-size: 30px;
       margin-left: 50px;
+      padding-top: 20px;
       text-align: center;
       color: #566dc3;
       text-shadow: 0 2px 0 #060b4e;
@@ -168,39 +219,127 @@
         color: #fe566f;
       }
     }
+    .main {
+      width: 100%;
+      height: 205px;
+      margin-top: 40px;
+      p {
+        font-size: 40px;
+        text-align: center;
+        color: #fff;
+      }
+    }
   }
   .bottom {
+    position: relative;
     width: 560px;
     height: 312px;
-    background: url('./../../assets/img/dianshi_bg.png') 0 0 no-repeat;
-    background-size: 100% 100%;
-    .box {
-      overflow: hidden;
-      width: 410px;
-      height: 290px;
-      margin-left: 17.5px;
-      padding-top: 20px;
+    margin-top: 24px;
+    cursor: pointer;
+    .bg {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+    }
+    .main {
+      position: absolute;
+      z-index: 0;
+      top: 28px;
+      left: 22px;
+      width: 390px;
+      height: 262px;
+      text-align: center;
+      background-color: #060b4e;
       img {
         width: 100%;
-        height: auto;
+        height: 100%;
       }
     }
   }
 }
 
 .grade-right {
-  width: 578.5px;
-  height: 711px;
-  margin-left: 33px;
-  padding-top: 20px;
+  width: 595px;
+  height: 709px;
   background: url('./../../assets/img/pingjia_bg.png') 0 0 no-repeat;
   background-size: 100% 100%;
   .title {
     font-family: WenYue-XinQingNianTi-NC-W8;
     font-size: 30px;
     margin-left: 30px;
+    padding-top: 20px;
     text-align: center;
     color: #566dc3;
     text-shadow: 0 2px 0 #060b4e;
+  }
+  .main {
+    overflow-y: auto;
+    height: 544px;
+    margin-top: 40px;
+    margin-right: 57px;
+    margin-left: 35px;
+
+    .item {
+      display: flex;
+      flex-direction: row;
+      width: 478px;
+      height: 190px;
+      margin-bottom: 20px;
+      background: url('./../../assets/img/list_bg.png') 0 0 no-repeat;
+      background-size: 100% 100%;
+
+      align-items: flex-start;
+
+      .brand {
+        width: 80px;
+        height: 78.5px;
+        margin-top: 15px;
+        margin-left: 15px;
+      }
+      .info-box {
+        width: 346.5px;
+        margin-top: 25px;
+        margin-left: 16px;
+        .time {
+          font-size: 15px;
+          font-weight: bold;
+          color: #b3bee9;
+        }
+        .text {
+          font-size: 16px;
+          margin-top: 9px;
+          color: #b3bee9;
+          span {
+            color: #5ec3e9;
+          }
+        }
+        .pic-box {
+          overflow-x: auto;
+          width: 100%;
+          margin-top: 17px;
+          padding-bottom: 8px;
+          white-space: nowrap;
+
+          li {
+            display: inline-block;
+            width: 104px;
+            height: 59px;
+            margin-left: 10px;
+            text-align: center;
+            border: 3px solid rgba(255, 255, 255, .2);
+            border-radius: 5px;
+            background-color: #5365aa;
+            &:first-child {
+              margin-left: 0;
+            }
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+      }
+    }
   }
 }
