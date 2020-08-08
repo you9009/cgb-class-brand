@@ -7,23 +7,28 @@ import StudentInfo from './../StudentInfo/index'
 const menuList = [
 	{
 		name: '品德之光',
-		pic: require('./../../assets/img/pingde_btn.png')
+		pic: require('./../../assets/img/pingde_btn.png'),
+		id: 1
 	},
 	{
 		name: '活力之光',
-		pic: require('./../../assets/img/huoli_btn.png')
+		pic: require('./../../assets/img/huoli_btn.png'),
+		id: 2
 	},
 	{
 		name: '悦美之光',
-		pic: require('./../../assets/img/yuemei_btn.png')
+		pic: require('./../../assets/img/yuemei_btn.png'),
+		id: 3
 	},
 	{
 		name: '智慧之光',
-		pic: require('./../../assets/img/zhihu_btn.png')
+		pic: require('./../../assets/img/zhihu_btn.png'),
+		id: 4
 	},
 	{
 		name: '实践之光',
-		pic: require('./../../assets/img/shijian_btn.png')
+		pic: require('./../../assets/img/shijian_btn.png'),
+		id: 5
 	}
 ]
 const comments = [
@@ -79,7 +84,7 @@ const comments = [
 const StudentHome = () => {
 	const [ menu, setMenu ] = useState(menuList)
 	const [ commentList, setCommentList ] = useState(comments)
-	const [ activeMenu, setaActiveMenu ] = useState(false)
+	const [ activeMenu, setaActiveMenu ] = useState(null)
 
 	return (
 		<div className={styles['student-home']}>
@@ -90,6 +95,12 @@ const StudentHome = () => {
 					src={require('./../../assets/img/logo_pic.png')}
 					alt="上海市黄浦区曹光彪小学"
 				/>
+				<div className={styles['count-down']}>
+					<img src={require('./../../assets/img/shalou_icon.png')} alt="倒计时图标" />
+					<p>
+						倒计时：<span>59</span> s
+					</p>
+				</div>
 				<div className={styles['student-msg']}>
 					<img src="http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg" alt="高伊伊" />
 					<div className={styles['msg']}>
@@ -103,7 +114,7 @@ const StudentHome = () => {
 				<div className={styles['left']}>
 					<ul>
 						{menu.map((item, index) => (
-							<li key={index} onClick={() => setaActiveMenu(true)}>
+							<li key={index} onClick={() => setaActiveMenu(item.id)}>
 								<img src={item.pic} alt={item.name} />
 							</li>
 						))}
@@ -127,9 +138,11 @@ const StudentHome = () => {
 						</ul>
 					</div>
 					<div className={styles['select-brand']}>
-						<div className={styles['brand-wrap']}>
-							<img src="http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg" alt="徽章名字" />
-						</div>
+						<img
+							className={styles['brand-pic']}
+							src="http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg"
+							alt="徽章名字"
+						/>
 						<div className={styles['info']}>
 							<div className={styles['name']}>【保护自然】徽章</div>
 							<ul className={styles['num']}>
@@ -144,11 +157,6 @@ const StudentHome = () => {
 								</li>
 							</ul>
 							<div className={styles['right-radius']} />
-							<img
-								className={styles['star']}
-								src={require('./../../assets/img/guang_xiao_pic.png')}
-								alt="星星"
-							/>
 						</div>
 					</div>
 				</div>
@@ -182,7 +190,7 @@ const StudentHome = () => {
 				</div>
 			</div>
 			{/* 弹窗 */}
-			{activeMenu ? <StudentInfo onClick={() => setaActiveMenu(false)} /> : null}
+			{activeMenu ? <StudentInfo id={activeMenu} onClick={() => setaActiveMenu(null)} /> : null}
 		</div>
 	)
 }

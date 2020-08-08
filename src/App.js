@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route, Link, Redirect } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import Cookie from 'js-cookie'
 
 import './assets/css/react.css'
@@ -8,13 +8,14 @@ import { router } from './router.js'
 const App = () => {
 	return (
 		<BrowserRouter>
+			{/* <Redirect exact from="/" to="/login" /> */}
 			<Switch>{router.map((route, i) => <SubRoutes key={i} {...route} />)}</Switch>
 		</BrowserRouter>
 	)
 }
 
 const SubRoutes = (route) => {
-	let isBool = !route.requireAuth||!!Cookie.get('CGB-BP-USER')
+	let isBool = !route.requireAuth || !!Cookie.get('CGB-BP-USER')
 
 	return isBool ? (
 		<Route path={route.path} render={(props) => <route.component {...props} routes={route.routes} />} />

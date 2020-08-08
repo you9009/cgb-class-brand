@@ -1,28 +1,32 @@
 import React, { useState } from 'react'
 
 import styles from './index.module.css'
-import { logDOM } from '@testing-library/react'
 
 const menuList = [
 	{
 		name: '品德之光',
-		pic: require('./../../assets/img/pingde_btn.png')
+		pic: require('./../../assets/img/pingde_btn.png'),
+		id: 1
 	},
 	{
 		name: '活力之光',
-		pic: require('./../../assets/img/huoli_btn.png')
+		pic: require('./../../assets/img/huoli_btn.png'),
+		id: 2
 	},
 	{
 		name: '悦美之光',
-		pic: require('./../../assets/img/yuemei_btn.png')
+		pic: require('./../../assets/img/yuemei_btn.png'),
+		id: 3
 	},
 	{
 		name: '智慧之光',
-		pic: require('./../../assets/img/zhihu_btn.png')
+		pic: require('./../../assets/img/zhihu_btn.png'),
+		id: 4
 	},
 	{
 		name: '实践之光',
-		pic: require('./../../assets/img/shijian_btn.png')
+		pic: require('./../../assets/img/shijian_btn.png'),
+		id: 5
 	}
 ]
 
@@ -128,9 +132,7 @@ const StudentInfo = (props) => {
 				<div className={styles['left']}>
 					<ul>
 						{menu.map((item, index) => (
-							<li key={index}>
-								<img src={item.pic} alt={item.name} />
-							</li>
+							<li key={index}>{props.id === item.id ? <img src={item.pic} alt={item.name} /> : null}</li>
 						))}
 					</ul>
 				</div>
