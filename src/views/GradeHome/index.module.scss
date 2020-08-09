@@ -164,6 +164,7 @@
 				padding-bottom: 22px;
 				.item {
 					margin: 0 14px;
+					text-align: center;
 					img {
 						width: 75px;
 						height: 75px;
@@ -190,6 +191,7 @@
 		background: url('./../../assets/img/shuka_bg.png') center center no-repeat;
 		background-color: #060b4e;
 		background-size: auto 80%;
+		cursor: pointer;
 		p {
 			font-size: 18px;
 			font-weight: bold;
