@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import echarts from 'echarts'
 
 import PhotoAlbum from './../PhotoAlbum'
@@ -408,10 +408,36 @@ const options = {
 	},
 	xAxis: {
 		type: 'category',
-		data: [ 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun' ]
+		data: [ 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun' ],
+		axisLabel: {
+			color: '#fff'
+		},
+		axisLine: {
+			lineStyle: {
+				color: '#fff'
+			}
+		},
+		axisTick: {
+			lineStyle: {
+				color: '#fff'
+			}
+		}
 	},
 	yAxis: {
-		type: 'value'
+		type: 'value',
+		axisLabel: {
+			color: '#fff'
+		},
+		axisLine: {
+			lineStyle: {
+				color: '#fff'
+			}
+		},
+		axisTick: {
+			lineStyle: {
+				color: '#fff'
+			}
+		}
 	},
 	series: [
 		{
@@ -444,8 +470,10 @@ const GradeHome = () => {
 				<div className={styles['logo-pic']}>
 					<img src={require('./../../assets/img/logo_pic.png')} alt="上海市黄浦区曹光彪小学" />
 					<div className={styles['grader-name']}>
-						<img src={require('./../../assets/img/banji_icon.png')} alt="三年级2班" />
-						<span>三年级2班</span>
+						<Link to="select-class">
+							<img src={require('./../../assets/img/banji_icon.png')} alt="三年级2班" />
+							<span>三年级2班</span>
+						</Link>
 					</div>
 				</div>
 				<div className={styles['weather-box']}>
