@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import echarts from 'echarts'
 
 import styles from './index.module.css'
@@ -86,9 +86,10 @@ const data = [
 	{
 		name: '孟子',
 		value: 1,
-		pic: require('./../../assets/img/shalou_icon.png'),
+		pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
 		itemStyle: {
-			color: '#5e9a80'
+			color: '#5e9a80',
+			opacity: 0.7
 		}
 	},
 	{
@@ -303,30 +304,43 @@ const options = {
 		highlightPolicy: 'ancestor',
 		data: data,
 		sort: null,
+		nodeClick: false,
 		label: {
 			position: 'outside',
 			rotate: 'radial',
 			distance: 10,
-			formatter: [ '{a|} {b}' ].join('\n'),
-			rich: {
-				a: {
-					backgroundColor: {
-						image: require('./../../assets/img/shalou_icon.png')
-					}
-				}
-			}
+			color: 'auto',
+			fontWeight: 'bold'
 		}
 	}
 }
 
 const StudentHome = () => {
+	let history = useHistory()
 	const [ menu, setMenu ] = useState(menuList)
 	const [ commentList, setCommentList ] = useState(comments)
 	const [ activeMenu, setaActiveMenu ] = useState(null)
+	const [ countDown, setCountDown ] = useState(60)
 
 	useEffect(() => {
 		echarts.init(document.getElementById('student-home')).setOption(options)
 	}, [])
+
+	useEffect(
+		() => {
+			const start = setInterval(() => {
+				if (countDown > 0) {
+					setCountDown(countDown - 1)
+				} else {
+					history.replace('/grade-home')
+				}
+			}, 1000)
+			return () => {
+				clearInterval(start)
+			}
+		},
+		[ countDown, history ]
+	)
 
 	return (
 		<div className={styles['student-home']}>
@@ -340,7 +354,7 @@ const StudentHome = () => {
 				<div className={styles['count-down']}>
 					<img src={require('./../../assets/img/shalou_icon.png')} alt="倒计时图标" />
 					<p>
-						倒计时：<span>59</span> s
+						倒计时：<span>{countDown}</span> s
 					</p>
 				</div>
 				<div className={styles['student-msg']}>
@@ -368,6 +382,9 @@ const StudentHome = () => {
 				<div className={styles['middle']}>
 					<div className={styles['echarts-box']}>
 						<div className={styles['echarts']} id="student-home" />
+						<div className={styles['echarts-bg']}>
+							<img src={require('./../../assets/img/jike_pic.png')} alt="echarts背景" />
+						</div>
 						<ul className={styles['cut-box']}>
 							<li>
 								<img src={require('./../../assets/img/xuanzhuan_zuo_btn.png')} alt="上一项" />

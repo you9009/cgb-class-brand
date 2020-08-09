@@ -130,6 +130,21 @@
 				height: 100%;
 				margin: 0 auto;
 			}
+			.echarts-bg {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: center;
+				img {
+					width: 263px;
+					height: auto;
+				}
+			}
 		}
 		.select-brand {
 			display: flex;
