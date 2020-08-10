@@ -4,7 +4,7 @@ import Cookie from 'js-cookie'
 
 import styles from './index.module.css'
 
-import api from './../../assets/js/api'
+import { login } from './../../store/login'
 
 const Login = () => {
 	let history = useHistory()
@@ -24,12 +24,11 @@ const Login = () => {
 	// 登录
 	const submit = () => {
 		if (active) {
-			let URL = '/SchoolData/login'
-			let apiData = {
+			let key = {
 				username: userName,
 				password: PassWord
 			}
-			api.post(URL, apiData).then((res) => {
+			login(key).then((res) => {
 				if (res.data.code === '100200') {
 					Cookie.set('CGB-BP-USER', res.data.data)
 					history.replace('/select-class')

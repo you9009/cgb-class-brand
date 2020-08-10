@@ -1,13 +1,20 @@
 import api from './../assets/js/api'
+
+// 登录
+export const login = (key) => {
+	let URL = '/SchoolData/login'
+	let data = {
+		username: key.username,
+		password: key.password
+	}
+	return api.post(URL, data)
+}
+
 // 获取校区列表
-const getSaList = (key) => {
+export const getSaList = (key) => {
 	let URL = '/SchoolData/getSaList'
-	let apiData = {
+	let data = {
 		s_id: key.s_id
 	}
-	api.post(URL, apiData).then((res) => {
-		if (res.data.code === '100200') {
-			console.log(res.data.data)
-		}
-	})
+	return api.post(URL, data)
 }
