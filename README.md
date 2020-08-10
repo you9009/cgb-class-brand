@@ -7,14 +7,6 @@
 - 班级相册
 
 
-let URL = ''
-let apiData = {}
-api.post(URL, apiData).then((res) => {
-  if (res.data.code === '100200') {
-  }
-})
-
-
 26442661130
 84343098
 
