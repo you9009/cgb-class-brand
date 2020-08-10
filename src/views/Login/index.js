@@ -4,7 +4,7 @@ import Cookie from 'js-cookie'
 
 import styles from './index.module.css'
 
-import { login } from './../../store/login'
+import { login } from './../../store'
 
 const Login = () => {
 	let history = useHistory()
