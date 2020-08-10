@@ -320,12 +320,14 @@ const StudentHome = () => {
 	const [ menu, setMenu ] = useState(menuList)
 	const [ commentList, setCommentList ] = useState(comments)
 	const [ activeMenu, setaActiveMenu ] = useState(null)
-	const [ countDown, setCountDown ] = useState(60)
+	const [countDown, setCountDown] = useState(60)
 
+	// echarts渲染
 	useEffect(() => {
 		echarts.init(document.getElementById('student-home')).setOption(options)
 	}, [])
 
+	// 倒计时
 	useEffect(
 		() => {
 			const start = setInterval(() => {

@@ -4,6 +4,8 @@ import Cookie from 'js-cookie'
 
 import styles from './index.module.css'
 
+import api from './../../assets/js/api'
+
 const Login = () => {
 	let history = useHistory()
 
@@ -20,14 +22,19 @@ const Login = () => {
 	)
 
 	// 登录
-	const loginTo = () => {
-		let key = {
-			username: userName,
-			password: PassWord
-		}
+	const submit = () => {
 		if (active) {
-			Cookie.set('CGB-BP-USER', key)
-			history.replace('/select-class')
+			let URL = '/SchoolData/login'
+			let apiData = {
+				username: userName,
+				password: PassWord
+			}
+			api.post(URL, apiData).then((res) => {
+				if (res.data.code === '100200') {
+					Cookie.set('CGB-BP-USER', res.data.data)
+					history.replace('/select-class')
+				}
+			})
 		}
 	}
 
@@ -54,7 +61,7 @@ const Login = () => {
 					/>
 				</div>
 				<div className={styles['form-button']}>
-					<button onClick={loginTo} className={active ? styles['active'] : ''}>
+					<button onClick={submit} className={active ? styles['active'] : ''}>
 						登录
 					</button>
 				</div>

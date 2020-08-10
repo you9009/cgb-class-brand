@@ -1,122 +1,116 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
+import Cookie from 'js-cookie'
+
+import api from './../../assets/js/api'
 
 import styles from './index.module.css'
-
-const selectClassList = [
-	{
-		title: '校区',
-		list: [
-			{
-				name: '校区1'
-			},
-			{
-				name: '校区2'
-			},
-			{
-				name: '校区3'
-			}
-		]
-	},
-	{
-		title: '年级',
-		list: [
-			{
-				name: '一年级'
-			},
-			{
-				name: '二年级'
-			},
-			{
-				name: '三年级'
-			},
-			{
-				name: '四年级'
-			},
-			{
-				name: '五年级'
-			},
-			{
-				name: '六年级'
-			}
-		]
-	},
-	{
-		title: '班级',
-		list: [
-			{
-				name: '1班'
-			},
-			{
-				name: '2班'
-			},
-			{
-				name: '3班'
-			},
-			{
-				name: '4班'
-			},
-			{
-				name: '5班'
-			},
-			{
-				name: '6班'
-			},
-			{
-				name: '7班'
-			},
-			{
-				name: '8班'
-			},
-			{
-				name: '9班'
-			},
-			{
-				name: '10班'
-			}
-		]
-	}
-]
 
 const SelectClass = () => {
 	let history = useHistory()
 
-	const [ gradeList, setGradeList ] = useState(selectClassList)
-	const [ schoolActive, setSchoolActive ] = useState({})
-	const [ gradeActive, setGradeActive ] = useState({})
-	const [ classActive, setClassActive ] = useState({})
+	const [ school, setSchool ] = useState([])
+	const [ grade, setGrade ] = useState([])
+	const [ clazz, setClazz ] = useState([])
+	const [ schoolActive, setSchoolActive ] = useState({ sa_name: '' })
+	const [ gradeActive, setGradeActive ] = useState({ gradeName: '' })
+	const [ classActive, setClassActive ] = useState({ c_name: '' })
 	const [ active, setActive ] = useState(false)
+
+	// 获取年级列表
+	const getClassList = useCallback((key) => {
+		let URL = '/SchoolData/getClassList'
+		let apiData = {
+			sa_id: key.sa_id,
+			g_id: key.g_id
+		}
+		api.post(URL, apiData).then((res) => {
+			if (res.data.code === '100200') {
+				let data = res.data.data.class_list
+				setClazz(data || [])
+			}
+		})
+	}, [])
+
+	// 选取年级
+	const selectGrade = useCallback((item) => {
+		setGradeActive(item)
+	}, [])
+
+	// 获取班级列表
+	const getGradeList = useCallback(
+		(key) => {
+			let URL = '/SchoolData/getClassList'
+			let apiData = {
+				sa_id: key.sa_id
+			}
+			api.post(URL, apiData).then((res) => {
+				if (res.data.code === '100200') {
+					let grade = res.data.data.grade_list
+					let clazz = res.data.data.class_list
+					if (grade) {
+						selectGrade(grade[0])
+					}
+					if (clazz) {
+						selectClzz(clazz[0])
+					}
+					setGrade(grade || [])
+					setClazz(clazz || [])
+				}
+			})
+		},
+		[ selectGrade ]
+	)
+
+	// 选取校区
+	const selectSchool = useCallback(
+		(item) => {
+			setSchoolActive(item)
+			setGradeActive({ gradeName: '' })
+			setClassActive({ c_name: '' })
+			getGradeList(item)
+		},
+		[ getGradeList ]
+	)
+
+	// 选择班级
+	const selectClzz = (item) => {
+		setClassActive(item)
+	}
+
+	// 获取校区列表
+	const getSaList = useCallback(
+		(key) => {
+			let URL = '/SchoolData/getSaList'
+			let apiData = {
+				s_id: key.s_id
+			}
+			api.post(URL, apiData).then((res) => {
+				if (res.data.code === '100200') {
+					setSchool(res.data.data || [])
+					selectSchool(res.data.data[0])
+				}
+			})
+		},
+		[ selectSchool ]
+	)
+
+	// 默认渲染
+	useEffect(
+		() => {
+			let key = Cookie.getJSON('CGB-BP-USER')
+			getSaList(key)
+		},
+		[ getSaList ]
+	)
 
 	// 监控选择
 	useEffect(
 		() => {
-			setActive(!!schoolActive.name && !!gradeActive.name && !!classActive.name)
+			setActive(!!schoolActive.sa_name && !!gradeActive.gradeName && !!classActive.c_name)
 		},
 		[ classActive, gradeActive, schoolActive ]
 	)
-
-	const getType = (name) => {
-		if (name === '校区') {
-			return schoolActive
-		}
-		if (name === '年级') {
-			return gradeActive
-		}
-		if (name === '班级') {
-			return classActive
-		}
-	}
-	const setType = (name, e) => {
-		if (name === '校区') {
-			setSchoolActive(e)
-		}
-		if (name === '年级') {
-			setGradeActive(e)
-		}
-		if (name === '班级') {
-			setClassActive(e)
-		}
-	}
 
 	// 选择班级
 	const submit = () => {
@@ -126,7 +120,14 @@ const SelectClass = () => {
 			class: classActive
 		}
 		if (active) {
-			history.push('/grade-home')
+			let link = {
+				pathname: '/grade-home',
+				state: {
+					s_id: classActive.s_id,
+					c_id: classActive.c_id
+				}
+			}
+			history.push(link)
 		}
 	}
 
@@ -136,27 +137,52 @@ const SelectClass = () => {
 				<img src={require('./../../assets/img/logo_pic.png')} alt="上海市黄浦区曹光彪小学" />
 			</div>
 			<div className={styles['grade-wrap']}>
-				{gradeList.map((item, index) => {
-					return (
-						<div className={styles['grade-item']} key={index}>
-							<div className={styles['item-name']}>{item.title}</div>
-							<ul>
-								{item.list.map((e, i) => (
-									<li
-										key={i}
-										className={e === getType(item.title) ? styles['active'] : ''}
-										onClick={() => setType(item.title, e)}>
-										{e.name}
-									</li>
-								))}
-							</ul>
-						</div>
-					)
-				})}
+				{/* 校区 */}
+				<div className={styles['grade-item']}>
+					<div className={styles['item-name']}>校区</div>
+					<ul>
+						{school.map((item, index) => (
+							<li
+								key={index}
+								className={item === schoolActive ? styles['active'] : ''}
+								onClick={() => selectSchool(item)}>
+								{item.sa_name}
+							</li>
+						))}
+					</ul>
+				</div>
+				{/* 年级 */}
+				<div className={styles['grade-item']}>
+					<div className={styles['item-name']}>年级</div>
+					<ul>
+						{grade.map((item, index) => (
+							<li
+								key={index}
+								className={item === gradeActive ? styles['active'] : ''}
+								onClick={() => selectGrade(item)}>
+								{item.gradeName}
+							</li>
+						))}
+					</ul>
+				</div>
+				{/* 班级 */}
+				<div className={styles['grade-item']}>
+					<div className={styles['item-name']}>班级</div>
+					<ul>
+						{clazz.map((item, index) => (
+							<li
+								key={index}
+								className={item === classActive ? styles['active'] : ''}
+								onClick={() => selectClzz(item)}>
+								{item.c_name}
+							</li>
+						))}
+					</ul>
+				</div>
 			</div>
 			<div className={styles['select-grade']}>
 				<div className={styles['grade-name']}>
-					{schoolActive.name}-{gradeActive.name}-{classActive.name}
+					{schoolActive.sa_name}-{gradeActive.gradeName}-{classActive.c_name}
 				</div>
 				<button onClick={submit} className={active ? styles['active'] : ''}>
 					确定

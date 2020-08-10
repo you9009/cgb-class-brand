@@ -20,6 +20,7 @@
 }
 
 .grade-wrap {
+  height: 396px;
   margin-left: -11px;
 }
 .grade-item {
@@ -63,7 +64,6 @@
     }
   }
   .item-name {
-    font-family: STYuanti-SC-Bold;
     font-size: 22.5px;
     padding: 7px 22px;
     color: #3f4156;
@@ -79,7 +79,6 @@
 
     flex-wrap: wrap;
     li {
-      font-family: STYuanti-SC-Bold;
       font-size: 27px;
       padding: 8.5px 0;
       cursor: pointer;
@@ -100,13 +99,11 @@
   margin-top: 7px;
   text-align: center;
   .grade-name {
-    font-family: STYuanti-SC-Bold;
     font-size: 27px;
     margin-bottom: 20px;
     color: #fff;
   }
   button {
-    font-family: STYuanti-SC-Bold;
     font-size: 30px;
     width: 560px;
     padding: 16px 0;

@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useHistory, Link } from 'react-router-dom'
 import echarts from 'echarts'
+
+import api from './../../assets/js/api'
 
 import PhotoAlbum from './../PhotoAlbum'
 
@@ -169,236 +171,33 @@ const comments = [
 		pic_box: []
 	}
 ]
+
 const rank = [
 	{
 		name: '品德之星',
-		list: [
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			}
-		]
+		l_id: 11
 	},
 	{
 		name: '活力之星',
-		list: [
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			}
-		]
+		l_id: 12
 	},
 	{
 		name: '悦美之星',
-		list: [
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			}
-		]
+		l_id: 13
 	},
 	{
 		name: '智慧之星',
-		list: [
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			}
-		]
+		l_id: 14
 	},
 	{
 		name: '实践之星',
-		list: [
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈紫函'
-			},
-			{
-				cover: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-				name: '陈子涵'
-			}
-		]
+		l_id: 15
 	}
 ]
 
 const options = {
 	animation: false,
+	color: '#fff',
 	grid: {
 		left: '2%',
 		right: '2%',
@@ -414,28 +213,35 @@ const options = {
 		},
 		axisLine: {
 			lineStyle: {
-				color: '#fff'
+				width: 4,
+				opacity: 0.1,
+				type: 'solid'
 			}
 		},
 		axisTick: {
-			lineStyle: {
-				color: '#fff'
-			}
+			show: false
 		}
 	},
 	yAxis: {
 		type: 'value',
 		axisLabel: {
-			color: '#fff'
+			show: false
+		},
+		axisTick: {
+			show: false
 		},
 		axisLine: {
 			lineStyle: {
-				color: '#fff'
+				width: 4,
+				color: 'rgba(255, 255, 255, .1)',
+				type: 'solid'
 			}
 		},
-		axisTick: {
+		splitLine: {
 			lineStyle: {
-				color: '#fff'
+				opacity: 0.1,
+				type: 'dashed',
+				width: 2
 			}
 		}
 	},
@@ -449,15 +255,64 @@ const options = {
 
 const GradeHome = () => {
 	let history = useHistory()
+	const [ searchKey, setSearchKey ] = useState(null)
 	const [ colorList, setColorList ] = useState(colors)
 	const [ commentList, setCommentList ] = useState(comments)
 	const [ rankTitle, setRankTitle ] = useState(rank)
-	const [ selectRank, setSelectRank ] = useState(rankTitle[0].list)
+	const [ Rank, setRank ] = useState(null)
+	const [ rankList, setRankList ] = useState([])
 	const [ photoAlbum, SetPhotoAlbum ] = useState(false)
 
-	useEffect(() => {
-		echarts.init(document.getElementById('grade-home')).setOption(options)
+	// 本周学生荣誉榜接口
+	const selectRank = useCallback((item) => {
+		let URL = '/SchoolData/weekhor'
+		let apiData = {
+			c_id: item.c_id,
+			l_id: item.l_id
+		}
+		api.post(URL, apiData).then((res) => {
+			let data = []
+			if (res.data) {
+				if (res.data.code === 200) {
+					data = res.data.data
+				}
+			}
+			setRankList(data)
+		})
 	}, [])
+
+	// 本周获章情况
+	const getWeeknum = useCallback((item) => {
+		let URL = '/SchoolData/weeknum'
+		let apiData = {
+			c_id: item.c_id
+		}
+		api.post(URL, apiData).then((res) => {
+			console.log(res)
+		})
+	}, [])
+
+	const setSelectRank = useCallback(
+		(item) => {
+			setRank(item)
+			selectRank({ c_id: searchKey.c_id, l_id: item.l_id })
+		},
+		[ searchKey.c_id, selectRank ]
+	)
+
+	useEffect(
+		() => {
+			// 6961
+			setSearchKey(...history.location.state)
+			setSelectRank(rankTitle[0])
+			echarts.init(document.getElementById('grade-home')).setOption(options)
+		},
+		[ history, rankTitle, selectRank, setSelectRank ]
+	)
+
+	const linkToSelect = () => {
+		history.push('/select-class')
+	}
 
 	const linkToStudent = () => {
 		history.push('/student-home')
@@ -469,11 +324,9 @@ const GradeHome = () => {
 			<div className={styles['grade-header']}>
 				<div className={styles['logo-pic']}>
 					<img src={require('./../../assets/img/logo_pic.png')} alt="上海市黄浦区曹光彪小学" />
-					<div className={styles['grader-name']}>
-						<Link to="select-class">
-							<img src={require('./../../assets/img/banji_icon.png')} alt="三年级2班" />
-							<span>三年级2班</span>
-						</Link>
+					<div className={styles['grader-name']} onClick={linkToSelect}>
+						<img src={require('./../../assets/img/banji_icon.png')} alt="三年级2班" />
+						<span>三年级2班</span>
 					</div>
 				</div>
 				<div className={styles['weather-box']}>
@@ -503,17 +356,17 @@ const GradeHome = () => {
 								{rankTitle.map((item, index) => (
 									<li
 										key={index}
-										className={item.list === selectRank ? styles['active'] : ''}
-										onClick={() => setSelectRank(item.list)}>
+										className={item === Rank ? styles['active'] : ''}
+										onClick={() => setSelectRank(item)}>
 										{item.name}
 									</li>
 								))}
 							</ul>
 							<div className={styles['student-list']}>
-								{selectRank.map((item, index) => (
+								{rankList.map((item, index) => (
 									<div className={styles['item']} key={index}>
-										<img src={item.cover} alt={item.name} />
-										<div className={styles['name']}>{item.name}</div>
+										<img src={item.u_logo_pic} alt={item.u_name} />
+										<div className={styles['name']}>{item.u_name}</div>
 									</div>
 								))}
 							</div>
@@ -529,9 +382,7 @@ const GradeHome = () => {
 						<div className={styles['title']}>
 							获章总量 <span>257</span> 枚
 						</div>
-						<div className={styles['main']} id="grade-home">
-							<p>这里是个echarts</p>
-						</div>
+						<div className={styles['main']} id="grade-home" />
 					</div>
 					<div className={styles['bottom']} onClick={() => SetPhotoAlbum(true)}>
 						<img className={styles['bg']} src={require('./../../assets/img/dianshi_bg.png')} alt="背景" />
