@@ -1,5 +1,5 @@
 import Login from './views/Login/index'
-import SelectClass from './views/SelectClass/index'
+import CheckClass from './views/CheckClass/index'
 import StudentHome from './views/StudentHome/index'
 import GradeHome from './views/GradeHome/index'
 
@@ -10,9 +10,9 @@ export const router = [
 		component: Login
 	},
 	{
-		path: '/select-class',
-		name: 'SelectClass',
-		component: SelectClass,
+		path: '/check-class',
+		name: 'CheckClass',
+		component: CheckClass,
 		requireAuth: true
 	},
 	{

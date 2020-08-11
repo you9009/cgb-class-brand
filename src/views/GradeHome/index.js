@@ -311,7 +311,7 @@ const GradeHome = () => {
 	)
 
 	const linkToSelect = () => {
-		history.push('/select-class')
+		history.push('/check-class')
 	}
 
 	const linkToStudent = () => {

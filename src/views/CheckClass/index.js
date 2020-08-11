@@ -2,11 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import Cookie from 'js-cookie'
 
-import api from './../../assets/js/api'
+import { getSaList } from '../../store'
 
 import styles from './index.module.css'
 
-const SelectClass = () => {
+const CheckClass = () => {
 	let history = useHistory()
 
 	const [ school, setSchool ] = useState([])
@@ -17,91 +17,32 @@ const SelectClass = () => {
 	const [ classActive, setClassActive ] = useState({ c_name: '' })
 	const [ active, setActive ] = useState(false)
 
-	// 获取年级列表
-	const getClassList = useCallback((key) => {
-		let URL = '/SchoolData/getClassList'
-		let apiData = {
-			sa_id: key.sa_id,
-			g_id: key.g_id
-		}
-		api.post(URL, apiData).then((res) => {
+	// 获取学校数据
+	const getSchool = useCallback((data) => {
+		getSaList(data).then((res) => {
 			if (res.data.code === '100200') {
-				let data = res.data.data.class_list
-				setClazz(data || [])
+				setSchool(res.data.data)
 			}
 		})
 	}, [])
 
+	// 选取学校
+	const selectSchool = (item) => {}
+
 	// 选取年级
-	const selectGrade = useCallback((item) => {
-		setGradeActive(item)
-	}, [])
+	const selectGrade = (item) => {}
 
-	// 获取班级列表
-	const getGradeList = useCallback(
-		(key) => {
-			let URL = '/SchoolData/getClassList'
-			let apiData = {
-				sa_id: key.sa_id
-			}
-			api.post(URL, apiData).then((res) => {
-				if (res.data.code === '100200') {
-					let grade = res.data.data.grade_list
-					let clazz = res.data.data.class_list
-					if (grade) {
-						selectGrade(grade[0])
-					}
-					if (clazz) {
-						selectClzz(clazz[0])
-					}
-					setGrade(grade || [])
-					setClazz(clazz || [])
-				}
-			})
-		},
-		[ selectGrade ]
-	)
-
-	// 选取校区
-	const selectSchool = useCallback(
-		(item) => {
-			setSchoolActive(item)
-			setGradeActive({ gradeName: '' })
-			setClassActive({ c_name: '' })
-			getGradeList(item)
-		},
-		[ getGradeList ]
-	)
-
-	// 选择班级
-	const selectClzz = (item) => {
-		setClassActive(item)
-	}
-
-	// 获取校区列表
-	const getSaList = useCallback(
-		(key) => {
-			let URL = '/SchoolData/getSaList'
-			let apiData = {
-				s_id: key.s_id
-			}
-			api.post(URL, apiData).then((res) => {
-				if (res.data.code === '100200') {
-					setSchool(res.data.data || [])
-					selectSchool(res.data.data[0])
-				}
-			})
-		},
-		[ selectSchool ]
-	)
+	// 选取班级
+	const selectClzz = (item) => {}
 
 	// 默认渲染
 	useEffect(
 		() => {
 			let key = Cookie.getJSON('CGB-BP-USER')
-			getSaList(key)
+			getSchool(key)
+			selectSchool(school[0])
 		},
-		[ getSaList ]
+		[ getSchool, school ]
 	)
 
 	// 监控选择
@@ -192,4 +133,4 @@ const SelectClass = () => {
 	)
 }
 
-export default SelectClass
+export default CheckClass

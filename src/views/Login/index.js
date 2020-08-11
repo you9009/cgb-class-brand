@@ -31,7 +31,7 @@ const Login = () => {
 			login(key).then((res) => {
 				if (res.data.code === '100200') {
 					Cookie.set('CGB-BP-USER', res.data.data)
-					history.replace('/select-class')
+					history.replace('/check-class')
 				}
 			})
 		}
