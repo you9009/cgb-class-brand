@@ -16,7 +16,7 @@ export const getSaList = (key) => {
 	let data = {
 		s_id: key.s_id
 	}
-	return api.post(URL, data)
+	return api.get(URL, data)
 }
 
 // 获取班级列表
@@ -26,7 +26,7 @@ export const getClassList = (key) => {
 		sa_id: key.sa_id,
 		g_id: key.g_id
 	}
-	return api.post(URL, data)
+	return api.get(URL, data)
 }
 
 // 获取班级详情数据
@@ -36,7 +36,17 @@ export const getClassInfo = (key) => {
 		s_id: key.s_id,
 		c_id: key.c_id
 	}
-	return api.post(URL, data)
+	return api.get(URL, data)
+}
+
+// 获取班级动态
+export const getClassDynamic = (key) => {
+	let URL = '/SchoolData/getClassDynamic'
+	let data = {
+		s_id: key.s_id,
+		c_id: key.c_id
+	}
+	return api.get(URL, data)
 }
 
 // 获取班级相册列表
@@ -48,7 +58,7 @@ export const getClassPicList = (key) => {
 		page: key.page,
 		pagesize: key.pagesize
 	}
-	return api.post(URL, data)
+	return api.get(URL, data)
 }
 
 // 本周学生荣誉榜接口
@@ -58,7 +68,7 @@ export const getWeekhor = (key) => {
 		l_id: key.l_id,
 		c_id: key.c_id
 	}
-	return api.post(URL, data)
+	return api.get(URL, data)
 }
 
 // 本周获章情况
@@ -67,7 +77,7 @@ export const getWeeknum = (key) => {
 	let data = {
 		c_id: key.c_id
 	}
-	return api.post(URL, data)
+	return api.get(URL, data)
 }
 
 // 个人光谱详情页面接口
@@ -80,7 +90,7 @@ export const getGpInfo = (key) => {
 		page: key.page,
 		pagesize: key.pagesize
 	}
-	return api.post(URL, data)
+	return api.get(URL, data)
 }
 
 // 徽章个人与班级平均数据
@@ -91,5 +101,24 @@ export const getCinfo = (key) => {
 		u_id: key.u_id,
 		chuo_id: key.chuo_id
 	}
-	return api.post(URL, data)
+	return api.get(URL, data)
+}
+
+// 获取学生信息
+export const getStuInfo = (key) => {
+	let URL = '/SchoolData/getStuInfo'
+	let data = {
+		c_id: key.c_id,
+		union_id: key.union_id,
+	}
+	return api.get(URL, data)
+}
+// 获取学生首页详情
+export const getStuDataInfo = (key) => {
+	let URL = '/SchoolData/getStuDataInfo'
+	let data = {
+		c_id: key.c_id,
+		union_id: key.union_id,
+	}
+	return api.get(URL, data)
 }

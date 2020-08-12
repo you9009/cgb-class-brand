@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { useHistory, Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import echarts from 'echarts'
 
-import api from './../../assets/js/api'
+import { getWeekhor, getWeeknum, getClassPicList, getClassInfo, getClassDynamic } from '../../store'
 
 import PhotoAlbum from './../PhotoAlbum'
 
@@ -122,55 +122,6 @@ const colors = [
 		opacity: 0.4
 	}
 ]
-const comments = [
-	{
-		band: '规范书写1',
-		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		time: '2020年8月7日10:34:43',
-		text: '张欢欢老师给小朋友颁发了【规范书写】徽章，评语“小朋友今天书写非常认真，继续加油！”',
-		pic_box: [
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg'
-		]
-	},
-	{
-		band: '规范书写2',
-		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		time: '2020年8月7日10:34:43',
-		text: '张欢欢老师给小朋友颁发了【规范书写】徽章，评语“小朋友今天书写非常认真，继续加油！”',
-		pic_box: [
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg'
-		]
-	},
-	{
-		band: '规范书写3',
-		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		time: '2020年8月7日10:34:43',
-		text: '张欢欢老师给小朋友颁发了【规范书写】徽章，评语“小朋友今天书写非常认真，继续加油！”',
-		pic_box: [
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg'
-		]
-	},
-	{
-		band: '规范书写4',
-		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		time: '2020年8月7日10:34:43',
-		text: '张欢欢老师给小朋友颁发了【规范书写】徽章，评语“小朋友今天书写非常认真，继续加油！”',
-		pic_box: [ 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg' ]
-	},
-	{
-		band: '规范书写5',
-		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		time: '2020年8月7日10:34:43',
-		text: '张欢欢老师给小朋友颁发了【规范书写】徽章，评语“小朋友今天书写非常认真，继续加油！”',
-		pic_box: []
-	}
-]
 
 const rank = [
 	{
@@ -207,7 +158,7 @@ const options = {
 	},
 	xAxis: {
 		type: 'category',
-		data: [ 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun' ],
+		data: [],
 		axisLabel: {
 			color: '#fff'
 		},
@@ -247,67 +198,168 @@ const options = {
 	},
 	series: [
 		{
-			data: [ 820, 932, 901, 934, 1290, 1330, 1320 ],
+			data: [],
 			type: 'line'
 		}
 	]
 }
 
+// 补全位数
+const addZero = (num) => {
+	if (num < 10) {
+		num = '0' + num
+	}
+	return num
+}
+
 const GradeHome = () => {
 	let history = useHistory()
-	const [ searchKey, setSearchKey ] = useState(null)
+
 	const [ colorList, setColorList ] = useState(colors)
-	const [ commentList, setCommentList ] = useState(comments)
+	const [ commentList, setCommentList ] = useState([])
 	const [ rankTitle, setRankTitle ] = useState(rank)
 	const [ Rank, setRank ] = useState(null)
 	const [ rankList, setRankList ] = useState([])
 	const [ photoAlbum, SetPhotoAlbum ] = useState(false)
+	const [ totalNum, SetTotalNum ] = useState(0)
+	const [ todayInfo, SetTodayInfo ] = useState(0)
+	const [ Time, SetTime ] = useState(0)
+	const [ photoAlbumData, setPhotoAlbumData ] = useState(0)
 
-	// 本周学生荣誉榜接口
-	const selectRank = useCallback((item) => {
-		let URL = '/SchoolData/weekhor'
-		let apiData = {
-			c_id: item.c_id,
-			l_id: item.l_id
-		}
-		api.post(URL, apiData).then((res) => {
-			let data = []
-			if (res.data) {
-				if (res.data.code === 200) {
-					data = res.data.data
+	// 获取班级详情数据
+	const getTodayInfo = (key) => {
+		getClassInfo(key).then((res) => {
+			if (res.data.code == '100200') {
+				let Time = new Date()
+				let year = Time.getFullYear()
+				let month = Time.getMonth() + 1
+				let day = Time.getDate()
+				let w = Time.getDay()
+				let weekList = [ '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日' ]
+				if (res.data.data) {
+					let weather = res.data.data.weather
+					if (weather) {
+						let data = {
+							day: year + '年' + addZero(month) + '月' + addZero(day) + '日',
+							week: weekList[w],
+							pic: require('./../../assets/img/home_mood_pic_' + weather.img + '.png'),
+							name: weather.name,
+							gradeclass: key.gradeName + key.c_name
+						}
+						SetTodayInfo(data)
+					}
 				}
 			}
-			setRankList(data)
 		})
-	}, [])
+	}
 
-	// 本周获章情况
-	const getWeeknum = useCallback((item) => {
-		let URL = '/SchoolData/weeknum'
-		let apiData = {
-			c_id: item.c_id
-		}
-		api.post(URL, apiData).then((res) => {
-			console.log(res)
-		})
-	}, [])
-
+	// 本周学生荣誉榜
 	const setSelectRank = useCallback(
 		(item) => {
-			setRank(item)
-			selectRank({ c_id: searchKey.c_id, l_id: item.l_id })
+			let isBool = history.location.state
+			if (isBool) {
+				let key = {
+					c_id: isBool.c_id,
+					l_id: item.l_id
+				}
+				setRank(item)
+				getWeekhor(key).then((res) => {
+					let data = []
+					if (res.data) {
+						if (res.data.code == '200') {
+							data = res.data.data
+						}
+					}
+					setRankList(data)
+				})
+			}
 		},
-		[ searchKey.c_id, selectRank ]
+		[ history.location.state ]
 	)
 
+	// 本周获章情况
+	const getWeekEcharts = (key) => {
+		getWeeknum(key).then((res) => {
+			if (res.data.code == '200') {
+				SetTotalNum(res.data.data.totalNum)
+				let title = []
+				let data = []
+				let isBool = false
+				let list = res.data.data
+				for (const k in list) {
+					if (list.hasOwnProperty(k)) {
+						const element = list[k]
+						if (k !== 'totalNum') {
+							isBool = true
+							title.push(k)
+							data.push(element)
+						}
+					}
+				}
+
+				options.xAxis.data = title
+				options.series[0].data = data
+				if (isBool) {
+					echarts.init(document.getElementById('grade-home')).setOption(options)
+				}
+			}
+		})
+	}
+
+	// 获取班级动态
+	const getComment = (key) => {
+		getClassDynamic(key).then((res) => {
+			if (res.data.code == '100200') {
+				setCommentList(res.data.data)
+			}
+		})
+	}
+
+	// 获取班级相册列表
+	const openPhotoAlbum = (num) => {
+		SetPhotoAlbum(true)
+		let key = {
+			page: num,
+			pagesize: 6,
+			...history.location.state
+		}
+		getClassPicList(key).then((res) => {
+			if (res.data.code == '100200') {
+				setPhotoAlbumData(res.data)
+			}
+		})
+	}
+
+	// 默认渲染
 	useEffect(
 		() => {
-			// 6961
-			setSearchKey(...history.location.state)
+			let searchKey = {
+				...history.location.state,
+				c_id: 5678,
+				s_id: 47
+			}
+			// let searchKey = history.location.state
 			setSelectRank(rankTitle[0])
-			echarts.init(document.getElementById('grade-home')).setOption(options)
+			getWeekEcharts(searchKey)
+			getTodayInfo(searchKey)
+			getComment(searchKey)
+
+			// 获取时间 —— 60秒刷新一次
+			const getTime = () => {
+				let time = new Date()
+				let hours = time.getHours()
+				let minutes = time.getMinutes()
+				SetTime(addZero(hours) + ':' + addZero(minutes))
+			}
+			getTime()
+			const start = setInterval(() => {
+				getTime()
+			}, 60 * 1000)
+			return () => {
+				clearInterval(start)
+			}
 		},
-		[ history, rankTitle, selectRank, setSelectRank ]
+		[ history.location.state, rankTitle, setSelectRank ]
 	)
 
 	const linkToSelect = () => {
@@ -315,7 +367,11 @@ const GradeHome = () => {
 	}
 
 	const linkToStudent = () => {
-		history.push('/student-home')
+		let link = {
+			pathname: '/student-home',
+			state: history.location.state
+		}
+		history.push(link)
 	}
 
 	return (
@@ -325,18 +381,20 @@ const GradeHome = () => {
 				<div className={styles['logo-pic']}>
 					<img src={require('./../../assets/img/logo_pic.png')} alt="上海市黄浦区曹光彪小学" />
 					<div className={styles['grader-name']} onClick={linkToSelect}>
-						<img src={require('./../../assets/img/banji_icon.png')} alt="三年级2班" />
-						<span>三年级2班</span>
+						<img src={require('./../../assets/img/banji_icon.png')} alt="" />
+						<span>{todayInfo.gradeclass}</span>
 					</div>
 				</div>
 				<div className={styles['weather-box']}>
-					<div className={styles['time']}>12:00</div>
+					<div className={styles['time']}>{Time}</div>
 					<div className={styles['day']}>
-						<p>2019年4月24日</p>
-						<p>星期三，多云</p>
+						<p>{todayInfo.day}</p>
+						<p>
+							{todayInfo.week}，{todayInfo.name}
+						</p>
 					</div>
 					<div className={styles['weather']}>
-						<img src={require('./../../assets/img/home_mood_pic_duoyun.png')} alt="天气" />
+						<img src={todayInfo.pic} alt="天气" />
 					</div>
 				</div>
 			</div>
@@ -380,11 +438,11 @@ const GradeHome = () => {
 				<div className={styles['grade-middle']}>
 					<div className={styles['top']}>
 						<div className={styles['title']}>
-							获章总量 <span>257</span> 枚
+							获章总量 <span>{totalNum}</span> 枚
 						</div>
 						<div className={styles['main']} id="grade-home" />
 					</div>
-					<div className={styles['bottom']} onClick={() => SetPhotoAlbum(true)}>
+					<div className={styles['bottom']} onClick={() => openPhotoAlbum(1)}>
 						<img className={styles['bg']} src={require('./../../assets/img/dianshi_bg.png')} alt="背景" />
 						<div className={styles['main']}>
 							<img src="http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg" alt="相册" />
@@ -397,12 +455,12 @@ const GradeHome = () => {
 						{commentList.map((item, index) => {
 							return (
 								<div key={index} className={styles['item']}>
-									<img className={styles['brand']} src={item.brand_pic} alt={item.brand} />
+									<img className={styles['brand']} src={item.u_logo_pic} alt="" />
 									<div className={styles['info-box']}>
-										<div className={styles['time']}>{item.time}</div>
-										<div className={styles['text']}>{item.text}</div>
+										<div className={styles['time']}>{item.cdate}</div>
+										<div className={styles['text']}>{item.title}</div>
 										<ul className={styles['pic-box']}>
-											{item.pic_box.map((e, i) => {
+											{item.img_src.map((e, i) => {
 												return (
 													<li key={i}>
 														<img src={e} alt="" />
@@ -419,7 +477,13 @@ const GradeHome = () => {
 			</div>
 
 			{/* 班级相册 */}
-			{photoAlbum ? <PhotoAlbum closeModal={() => SetPhotoAlbum(false)} /> : null}
+			{photoAlbum ? (
+				<PhotoAlbum
+					data={photoAlbumData}
+					next={(e) => openPhotoAlbum(e)}
+					closeModal={() => SetPhotoAlbum(false)}
+				/>
+			) : null}
 		</div>
 	)
 }

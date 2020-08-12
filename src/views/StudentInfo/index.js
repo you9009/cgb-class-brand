@@ -6,27 +6,27 @@ const menuList = [
 	{
 		name: '品德之光',
 		pic: require('./../../assets/img/pingde_btn.png'),
-		id: 1
+		l_id: 11
 	},
 	{
 		name: '活力之光',
 		pic: require('./../../assets/img/huoli_btn.png'),
-		id: 2
+		l_id: 12
 	},
 	{
 		name: '悦美之光',
 		pic: require('./../../assets/img/yuemei_btn.png'),
-		id: 3
+		l_id: 13
 	},
 	{
 		name: '智慧之光',
 		pic: require('./../../assets/img/zhihu_btn.png'),
-		id: 4
+		l_id: 14
 	},
 	{
 		name: '实践之光',
 		pic: require('./../../assets/img/shijian_btn.png'),
-		id: 5
+		l_id: 15
 	}
 ]
 
@@ -132,7 +132,7 @@ const StudentInfo = (props) => {
 				<div className={styles['left']}>
 					<ul>
 						{menu.map((item, index) => (
-							<li key={index}>{props.id === item.id ? <img src={item.pic} alt={item.name} /> : null}</li>
+							<li key={index}>{props.l_id === item.l_id ? <img src={item.pic} alt={item.name} /> : null}</li>
 						))}
 					</ul>
 				</div>

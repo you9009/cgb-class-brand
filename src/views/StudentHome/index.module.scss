@@ -1,3 +1,8 @@
+@font-face {
+  font-family: WenYue-XinQingNianTi-NC-W8;
+
+  src: url ('./../../assets/font/wyxqn.otf');
+}
 .header-wrap {
   display: flex;
   flex-direction: row;
@@ -92,10 +97,11 @@
         }
       }
     }
-    a {
+    .back {
       position: absolute;
       bottom: -30px;
       left: 0;
+      cursor: pointer;
       img {
         width: 94px;
         height: auto;
@@ -203,7 +209,8 @@
     background: url('./../../assets/img/paihang_bg.png') 0 0 no-repeat;
     background-size: 100% 100%;
     .title-box {
-      padding-top: 18px;
+      margin-right: 30px;
+      padding-top: 20px;
       text-align: center;
       .today {
         font-family: WenYue-XinQingNianTi-NC-W8;

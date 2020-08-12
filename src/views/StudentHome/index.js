@@ -9,29 +9,30 @@ const menuList = [
 	{
 		name: '品德之光',
 		pic: require('./../../assets/img/pingde_btn.png'),
-		id: 1
+		l_id: 11
 	},
 	{
 		name: '活力之光',
 		pic: require('./../../assets/img/huoli_btn.png'),
-		id: 2
+		l_id: 12
 	},
 	{
 		name: '悦美之光',
 		pic: require('./../../assets/img/yuemei_btn.png'),
-		id: 3
+		l_id: 13
 	},
 	{
 		name: '智慧之光',
 		pic: require('./../../assets/img/zhihu_btn.png'),
-		id: 4
+		l_id: 14
 	},
 	{
 		name: '实践之光',
 		pic: require('./../../assets/img/shijian_btn.png'),
-		id: 5
+		l_id: 15
 	}
 ]
+
 const comments = [
 	{
 		band: '规范书写1',
@@ -319,8 +320,8 @@ const StudentHome = () => {
 	let history = useHistory()
 	const [ menu, setMenu ] = useState(menuList)
 	const [ commentList, setCommentList ] = useState(comments)
-	const [ activeMenu, setaActiveMenu ] = useState(null)
-	const [countDown, setCountDown] = useState(60)
+	const [ activeMenu, setActiveMenu ] = useState(null)
+	const [ countDown, setCountDown ] = useState(60)
 
 	// echarts渲染
 	useEffect(() => {
@@ -334,7 +335,11 @@ const StudentHome = () => {
 				if (countDown > 0) {
 					setCountDown(countDown - 1)
 				} else {
-					history.replace('/grade-home')
+					let link = {
+						pathname: '/grade-home',
+						state: history.location.state
+					}
+					history.replace(link)
 				}
 			}, 1000)
 			return () => {
@@ -343,6 +348,14 @@ const StudentHome = () => {
 		},
 		[ countDown, history ]
 	)
+
+	const goBack = () => {
+		let link = {
+			pathname: '/grade-home',
+			state: history.location.state
+		}
+		history.replace(link)
+	}
 
 	return (
 		<div className={styles['student-home']}>
@@ -372,14 +385,19 @@ const StudentHome = () => {
 				<div className={styles['left']}>
 					<ul>
 						{menu.map((item, index) => (
-							<li key={index} onClick={() => setaActiveMenu(item.id)}>
+							<li
+								key={index}
+								onClick={() => {
+									setCountDown(60)
+									setActiveMenu(item.l_id)
+								}}>
 								<img src={item.pic} alt={item.name} />
 							</li>
 						))}
 					</ul>
-					<Link to="/grade-home">
+					<div className={styles['back']} onClick={() => goBack()}>
 						<img src={require('./../../assets/img/shouye _btn.png')} alt="班级主页" />
-					</Link>
+					</div>
 				</div>
 				<div className={styles['middle']}>
 					<div className={styles['echarts-box']}>
@@ -449,7 +467,7 @@ const StudentHome = () => {
 				</div>
 			</div>
 			{/* 弹窗 */}
-			{activeMenu ? <StudentInfo id={activeMenu} onClick={() => setaActiveMenu(null)} /> : null}
+			{activeMenu ? <StudentInfo l_id={activeMenu} onClick={() => setActiveMenu(null)} /> : null}
 		</div>
 	)
 }

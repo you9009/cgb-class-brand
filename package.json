@@ -27,7 +27,8 @@
       "no-unused-vars": "off",
       "no-useless-concat": "off",
       "no-sparse-arrays": "off",
-      "no-lone-blocks": "off"
+      "no-lone-blocks": "off",
+      "eqeqeq": "off"
     }
   },
   "browserslist": {
