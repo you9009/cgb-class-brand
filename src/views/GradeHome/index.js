@@ -216,6 +216,8 @@ const GradeHome = () => {
 	let history = useHistory()
 
 	const [ colorList, setColorList ] = useState(colors)
+	const [ searchKey, setSearchKey ] = useState(null)
+
 	const [ commentList, setCommentList ] = useState([])
 	const [ rankTitle, setRankTitle ] = useState(rank)
 	const [ Rank, setRank ] = useState(null)
@@ -225,6 +227,7 @@ const GradeHome = () => {
 	const [ todayInfo, SetTodayInfo ] = useState(0)
 	const [ Time, SetTime ] = useState(0)
 	const [ photoAlbumData, setPhotoAlbumData ] = useState(0)
+	const [ cover, setCover ] = useState(null)
 
 	// 获取班级详情数据
 	const getTodayInfo = (key) => {
@@ -321,11 +324,28 @@ const GradeHome = () => {
 		let key = {
 			page: num,
 			pagesize: 6,
-			...history.location.state
+			...searchKey
 		}
 		getClassPicList(key).then((res) => {
 			if (res.data.code == '100200') {
 				setPhotoAlbumData(res.data)
+			}
+		})
+	}
+
+	const getPhotoAlbum = (item) => {
+		let key = {
+			page: 1,
+			pagesize: 6,
+			...item
+		}
+		getClassPicList(key).then((res) => {
+			if (res.data.code == '100200') {
+				if (res.data.data) {
+					if (res.data.data.length) {
+						setCover(res.data.data[0].pic)
+					}
+				}
 			}
 		})
 	}
@@ -339,10 +359,12 @@ const GradeHome = () => {
 				s_id: 47
 			}
 			// let searchKey = history.location.state
+			setSearchKey(searchKey)
 			setSelectRank(rankTitle[0])
 			getWeekEcharts(searchKey)
 			getTodayInfo(searchKey)
 			getComment(searchKey)
+			getPhotoAlbum(searchKey)
 
 			// 获取时间 —— 60秒刷新一次
 			const getTime = () => {
@@ -445,7 +467,7 @@ const GradeHome = () => {
 					<div className={styles['bottom']} onClick={() => openPhotoAlbum(1)}>
 						<img className={styles['bg']} src={require('./../../assets/img/dianshi_bg.png')} alt="背景" />
 						<div className={styles['main']}>
-							<img src="http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg" alt="相册" />
+							<img src={cover} alt="相册" />
 						</div>
 					</div>
 				</div>

@@ -104,15 +104,6 @@ export const getCinfo = (key) => {
 	return api.get(URL, data)
 }
 
-// 获取学生信息
-export const getStuInfo = (key) => {
-	let URL = '/SchoolData/getStuInfo'
-	let data = {
-		c_id: key.c_id,
-		union_id: key.union_id,
-	}
-	return api.get(URL, data)
-}
 // 获取学生首页详情
 export const getStuDataInfo = (key) => {
 	let URL = '/SchoolData/getStuDataInfo'

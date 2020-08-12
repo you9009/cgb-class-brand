@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useHistory } from 'react-router-dom'
 import echarts from 'echarts'
+
+import { getStuDataInfo, getGpInfo } from '../../store'
 
 import styles from './index.module.css'
 import StudentInfo from './../StudentInfo/index'
@@ -318,6 +320,11 @@ const options = {
 
 const StudentHome = () => {
 	let history = useHistory()
+
+	const [ searchKey, setSearchKey ] = useState(null)
+	const [ studInfo, setStudInfo ] = useState(null)
+	const [ studGrdt, setStudGrdt ] = useState(null)
+
 	const [ menu, setMenu ] = useState(menuList)
 	const [ commentList, setCommentList ] = useState(comments)
 	const [ activeMenu, setActiveMenu ] = useState(null)
@@ -328,10 +335,39 @@ const StudentHome = () => {
 		echarts.init(document.getElementById('student-home')).setOption(options)
 	}, [])
 
-	// 倒计时
-	useEffect(
+	const getCreated = useCallback(
 		() => {
-			const start = setInterval(() => {
+			let searchKey = history.location.state
+			setSearchKey(searchKey)
+			getStuInfo({ c_id: 6606, union_id: 3333 })
+		},
+		[ history.location.state ]
+	)
+
+	const getStuInfo = (key) => {
+		getStuDataInfo(key).then((res) => {
+			if (res.data.code == '100200') {
+				let data = res.data.data
+				if (data) {
+					let item = {
+						u_id: data.u_id,
+						gu_code: data.gu_code,
+						u_name: data.u_name,
+						u_logo_pic: data.u_logo_pic,
+						dcz: data.dcz,
+						c_name: data.c_name,
+						today_stamp_count: data.today_stamp_count
+					}
+					setStudInfo(item)
+				}
+			}
+		})
+	}
+
+	// 倒计时
+	const getCountDown = useCallback(
+		() => {
+			setInterval(() => {
 				if (countDown > 0) {
 					setCountDown(countDown - 1)
 				} else {
@@ -342,17 +378,26 @@ const StudentHome = () => {
 					history.replace(link)
 				}
 			}, 1000)
-			return () => {
-				clearInterval(start)
-			}
 		},
 		[ countDown, history ]
+	)
+
+	// 倒计时
+	useEffect(
+		() => {
+			getCreated()
+			// const start = getCountDown()
+			return () => {
+				// clearInterval(start)
+			}
+		},
+		[getCountDown, getCreated]
 	)
 
 	const goBack = () => {
 		let link = {
 			pathname: '/grade-home',
-			state: history.location.state
+			state: searchKey
 		}
 		history.replace(link)
 	}
@@ -372,13 +417,15 @@ const StudentHome = () => {
 						倒计时：<span>{countDown}</span> s
 					</p>
 				</div>
-				<div className={styles['student-msg']}>
-					<img src="http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg" alt="高伊伊" />
-					<div className={styles['msg']}>
-						<p>高伊伊</p>
-						<p>三年级3班</p>
+				{studInfo ? (
+					<div className={styles['student-msg']}>
+						<img src={studInfo.u_logo_pic} alt="" />
+						<div className={styles['msg']}>
+							<p>{studInfo.u_name}</p>
+							<p>{studInfo.c_name}</p>
+						</div>
 					</div>
-				</div>
+				) : null}
 			</div>
 			{/* 内容区 */}
 			<div className={styles['main-wrap']}>
@@ -439,30 +486,32 @@ const StudentHome = () => {
 				</div>
 				<div className={styles['right']}>
 					<div className={styles['title-box']}>
-						<div className={styles['today']}>今日获得徽章 8枚</div>
-						<div className={styles['total']}>累计获得 120枚</div>
+						<div className={styles['today']}>今日获得徽章 {studInfo ? studInfo.today_stamp_count : 0}枚</div>
+						<div className={styles['total']}>累计获得 {studInfo ? studInfo.dcz : 0}枚</div>
 					</div>
 					<div className={styles['main']}>
-						{commentList.map((item, index) => {
-							return (
-								<div key={index} className={styles['item']}>
-									<img className={styles['brand']} src={item.brand_pic} alt={item.brand} />
-									<div className={styles['info-box']}>
-										<div className={styles['time']}>{item.time}</div>
-										<div className={styles['text']}>{item.text}</div>
-										<ul className={styles['pic-box']}>
-											{item.pic_box.map((e, i) => {
-												return (
-													<li key={i}>
-														<img src={e} alt="" />
-													</li>
-												)
-											})}
-										</ul>
+						{studGrdt ? (
+							studGrdt.map((item, index) => {
+								return (
+									<div key={index} className={styles['item']}>
+										<img className={styles['brand']} src={item.brand_pic} alt={item.brand} />
+										<div className={styles['info-box']}>
+											<div className={styles['time']}>{item.time}</div>
+											<div className={styles['text']}>{item.text}</div>
+											<ul className={styles['pic-box']}>
+												{item.pic_box.map((e, i) => {
+													return (
+														<li key={i}>
+															<img src={e} alt="" />
+														</li>
+													)
+												})}
+											</ul>
+										</div>
 									</div>
-								</div>
-							)
-						})}
+								)
+							})
+						) : null}
 					</div>
 				</div>
 			</div>
