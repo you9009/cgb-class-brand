@@ -69,6 +69,7 @@
 }
 .main {
   .top {
+    height: 360px;
     padding: 0 48px;
     .msg {
       font-family: WenYue-XinQingNianTi-NC-W8;
@@ -172,22 +173,23 @@
 
           align-items: center;
           justify-content: space-between;
-          span {
+          .plan-level {
             font-size: 23px;
             font-weight: bold;
             color: #fff;
           }
           .plan-box {
             position: relative;
+            overflow: hidden;
             width: 55px;
             height: 30px;
-            padding-right: 8px;
+            border-radius: 5px;
             background: url('./../../assets/img/dianchu_icon.png') 0 0 no-repeat;
             background-size: 100% 100%;
             span {
               position: absolute;
               top: 0;
-              left: 0;
+              left: 5px;
               height: 100%;
               border-radius: 5px;
               background-color: #fff;

@@ -384,14 +384,22 @@ const GradeHome = () => {
 		[ history.location.state, rankTitle, setSelectRank ]
 	)
 
+	// 去班级选择页面
 	const linkToSelect = () => {
 		history.push('/check-class')
 	}
 
+	// 去学生详情页
 	const linkToStudent = () => {
+		// let state = history.location.state
+		let state = {
+			c_id: 6191,
+			u_id: 159569,
+			union_id: 3333
+		}
 		let link = {
 			pathname: '/student-home',
-			state: history.location.state
+			state
 		}
 		history.push(link)
 	}

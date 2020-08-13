@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import echarts from 'echarts'
 
-import { getStuDataInfo, getGpInfo } from '../../store'
+import { getStuDataInfo, getGpInfo, getcinfo } from '../../store'
 
 import styles from './index.module.css'
 import StudentInfo from './../StudentInfo/index'
@@ -35,315 +35,25 @@ const menuList = [
 	}
 ]
 
-const comments = [
-	{
-		band: '规范书写1',
-		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		time: '2020年8月7日10:34:43',
-		text: '张欢欢老师给你颁发了【规范书写】徽章，评语“你今天书写非常认真，继续加油！”',
-		pic_box: [
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg'
-		]
-	},
-	{
-		band: '规范书写2',
-		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		time: '2020年8月7日10:34:43',
-		text: '张欢欢老师给你颁发了【规范书写】徽章，评语“你今天书写非常认真，继续加油！”',
-		pic_box: [
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg'
-		]
-	},
-	{
-		band: '规范书写3',
-		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		time: '2020年8月7日10:34:43',
-		text: '张欢欢老师给你颁发了【规范书写】徽章，评语“你今天书写非常认真，继续加油！”',
-		pic_box: [
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg'
-		]
-	},
-	{
-		band: '规范书写4',
-		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		time: '2020年8月7日10:34:43',
-		text: '张欢欢老师给你颁发了【规范书写】徽章，评语“你今天书写非常认真，继续加油！”',
-		pic_box: [ 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg' ]
-	},
-	{
-		band: '规范书写5',
-		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		time: '2020年8月7日10:34:43',
-		text: '张欢欢老师给你颁发了【规范书写】徽章，评语“你今天书写非常认真，继续加油！”',
-		pic_box: []
-	}
-]
-
-const data = [
-	{
-		name: '孟子',
-		value: 1,
-		pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		itemStyle: {
-			color: '#5e9a80',
-			opacity: 0.7
-		}
-	},
-	{
-		name: '大学',
-		value: 1,
-		itemStyle: {
-			color: '#3aa255'
-		}
-	},
-	{
-		name: '中庸',
-		value: 1,
-		itemStyle: {
-			color: '#5e9a80'
-		}
-	},
-	{
-		name: '书经（尚书）',
-		value: 1,
-		itemStyle: {
-			color: '#3aa255'
-		}
-	},
-	{
-		name: '礼记',
-		value: 1,
-		itemStyle: {
-			color: '#5e9a80'
-		}
-	},
-	{
-		name: '易经',
-		value: 1,
-		itemStyle: {
-			color: '#3aa255'
-		}
-	},
-	{
-		name: '诗经',
-		value: 1,
-		itemStyle: {
-			color: '#5e9a80'
-		}
-	},
-	{
-		name: '战国策',
-		value: 1,
-		itemStyle: {
-			color: '#FFDEAD'
-		}
-	},
-	{
-		name: '左传',
-		value: 1,
-		itemStyle: {
-			color: '#EEDC82'
-		}
-	},
-	{
-		name: '史记',
-		value: 1,
-		itemStyle: {
-			color: '#FFDEAD'
-		}
-	},
-	{
-		name: '孟子',
-		value: 1,
-		itemStyle: {
-			color: '#5e9a80'
-		}
-	},
-	{
-		name: '大学',
-		value: 1,
-		itemStyle: {
-			color: '#3aa255'
-		}
-	},
-	{
-		name: '中庸',
-		value: 1,
-		itemStyle: {
-			color: '#5e9a80'
-		}
-	},
-	{
-		name: '书经（尚书）',
-		value: 1,
-		itemStyle: {
-			color: '#3aa255'
-		}
-	},
-	{
-		name: '礼记',
-		value: 1,
-		itemStyle: {
-			color: '#5e9a80'
-		}
-	},
-	{
-		name: '易经',
-		value: 1,
-		itemStyle: {
-			color: '#3aa255'
-		}
-	},
-	{
-		name: '诗经',
-		value: 1,
-		itemStyle: {
-			color: '#5e9a80'
-		}
-	},
-	{
-		name: '战国策',
-		value: 1,
-		itemStyle: {
-			color: '#FFDEAD'
-		}
-	},
-	{
-		name: '左传',
-		value: 1,
-		itemStyle: {
-			color: '#EEDC82'
-		}
-	},
-	{
-		name: '史记',
-		value: 1,
-		itemStyle: {
-			color: '#FFDEAD'
-		}
-	},
-	{
-		name: '孟子',
-		value: 1,
-		itemStyle: {
-			color: '#5e9a80'
-		}
-	},
-	{
-		name: '大学',
-		value: 1,
-		itemStyle: {
-			color: '#3aa255'
-		}
-	},
-	{
-		name: '中庸',
-		value: 1,
-		itemStyle: {
-			color: '#5e9a80'
-		}
-	},
-	{
-		name: '书经（尚书）',
-		value: 1,
-		itemStyle: {
-			color: '#3aa255'
-		}
-	},
-	{
-		name: '礼记',
-		value: 1,
-		itemStyle: {
-			color: '#5e9a80'
-		}
-	},
-	{
-		name: '易经',
-		value: 1,
-		itemStyle: {
-			color: '#3aa255'
-		}
-	},
-	{
-		name: '诗经',
-		value: 1,
-		itemStyle: {
-			color: '#5e9a80'
-		}
-	},
-	{
-		name: '战国策',
-		value: 1,
-		itemStyle: {
-			color: '#FFDEAD'
-		}
-	},
-	{
-		name: '左传',
-		value: 1,
-		itemStyle: {
-			color: '#EEDC82'
-		}
-	},
-	{
-		name: '史记',
-		value: 1,
-		itemStyle: {
-			color: '#FFDEAD'
-		}
-	}
-]
-
-const options = {
-	animation: false,
-	series: {
-		type: 'sunburst',
-		highlightPolicy: 'ancestor',
-		data: data,
-		sort: null,
-		nodeClick: false,
-		label: {
-			position: 'outside',
-			rotate: 'radial',
-			distance: 10,
-			color: 'auto',
-			fontWeight: 'bold'
-		}
-	}
-}
-
 const StudentHome = () => {
 	let history = useHistory()
+	const [ countDown, setCountDown ] = useState(60)
+	const [ menu, setMenu ] = useState(menuList)
 
 	const [ searchKey, setSearchKey ] = useState(null)
 	const [ studInfo, setStudInfo ] = useState(null)
 	const [ studGrdt, setStudGrdt ] = useState(null)
+	const [ studGrdtComments, setStudGrdtComments ] = useState(null)
 
-	const [ menu, setMenu ] = useState(menuList)
-	const [ commentList, setCommentList ] = useState(comments)
-	const [ activeMenu, setActiveMenu ] = useState(null)
-	const [ countDown, setCountDown ] = useState(60)
+	const [ brandkey, setBrandKey ] = useState(null)
+	const [ showBrand, setshowBrand ] = useState(null)
+	const [ brandList, setBrandList ] = useState(null)
 
-	// echarts渲染
-	useEffect(() => {
-		echarts.init(document.getElementById('student-home')).setOption(options)
-	}, [])
+	const [ activeId, setActiveId ] = useState(null)
+	const [ activeBrands, setActiveBrands ] = useState(null)
+	const [ activeComments, setActiveComments ] = useState(null)
 
-	const getCreated = useCallback(
-		() => {
-			let searchKey = history.location.state
-			setSearchKey(searchKey)
-			getStuInfo({ c_id: 6606, union_id: 3333 })
-		},
-		[ history.location.state ]
-	)
-
+	// 获取学生信息
 	const getStuInfo = (key) => {
 		getStuDataInfo(key).then((res) => {
 			if (res.data.code == '100200') {
@@ -354,14 +64,159 @@ const StudentHome = () => {
 						gu_code: data.gu_code,
 						u_name: data.u_name,
 						u_logo_pic: data.u_logo_pic,
-						dcz: data.dcz,
-						c_name: data.c_name,
-						today_stamp_count: data.today_stamp_count
+						c_name: data.c_name
 					}
 					setStudInfo(item)
 				}
 			}
 		})
+	}
+
+	// 获章流水
+	const getGpComments = (key) => {
+		getGpInfo(key).then((res) => {
+			if (res.data.code == '200') {
+				let data = res.data.data
+				setStudGrdt({
+					todaynum: data.todaynum,
+					totalnum: data.totalnum
+				})
+				for (let i = 0; i < data.data.length; i++) {
+					const element = data.data[i]
+					if (element.img_src) {
+						element.img_src = data.data[i].img_src.split(',')
+					} else {
+						delete data.data[i].img_src
+					}
+				}
+				setStudGrdtComments(data.data)
+			}
+		})
+	}
+
+	// 每个章获得点亮值--echarts
+	const getGpEcharts = (key) => {
+		getGpInfo(key).then((res) => {
+			if (res.data.code == '200') {
+				let data = res.data.data
+				for (let i = 0; i < data.length; i++) {
+					const element = data[i]
+					data[i] = {
+						chuo_id: element.chuo_id,
+						name: element.chuo_name,
+						value: 1,
+						pic: element.chuo_src,
+						itemStyle: {
+							color: element.color,
+							opacity: Number(element.level) / Number(element.maxlevel)
+						}
+					}
+				}
+				// 所有徽章数据
+				setBrandList(data)
+				// echarts
+				const options = {
+					animation: false,
+					series: {
+						type: 'sunburst',
+						highlightPolicy: 'ancestor',
+						data: data,
+						sort: null,
+						nodeClick: false,
+						label: {
+							position: 'outside',
+							rotate: 'radial',
+							distance: 10,
+							color: 'auto',
+							fontWeight: 'bold'
+						}
+					}
+				}
+				echarts.init(document.getElementById('student-home')).setOption(options)
+				// 当前展示徽章
+				setBrandKey(0)
+			}
+		})
+	}
+
+	// 打开弹窗
+	const openStudentInfo = (item) => {
+		let isBool = true
+		let brandsdata = {
+			u_id: 159569,
+			type: 2,
+			l_id: item.l_id
+		}
+		getGpInfo(brandsdata).then((res) => {
+			if (res.data) {
+				if (res.data.code == '200') {
+					let data = res.data.data
+					for (let i = 0; i < data.data.length; i++) {
+						const element = data.data[i]
+						if (element.img_src) {
+							element.img_src = data.data[i].img_src.split(',')
+						} else {
+							delete data.data[i].img_src
+						}
+					}
+					setActiveBrands(data)
+				}
+			} else {
+				isBool = false
+			}
+		})
+		let commentsdata = {
+			u_id: 159569,
+			type: 1,
+			l_id: item.l_id,
+			page: 1,
+			pagesize: 3
+		}
+		getGpInfo(commentsdata).then((res) => {
+			if (res.data) {
+				if (res.data.code == '200') {
+					let data = res.data.data
+					setActiveComments(data)
+				}
+			} else {
+				isBool = false
+			}
+		})
+		if (isBool) {
+			setActiveId(item.l_id)
+		}
+	}
+
+	// 切换当前徽章
+	const nextBand = (name) => {
+		let length = brandList.length - 1
+		let now = brandkey
+		if (name == 'prev') {
+			if (now == 0) {
+				now = length
+			} else {
+				now--
+			}
+		}
+		if (name == 'next') {
+			if (now == length) {
+				now = 0
+			} else {
+				now++
+			}
+		}
+		setBrandKey(now)
+	}
+
+	// 返回上一页
+	const goBack = () => {
+		let state = history.location.state
+		delete state.union_id
+		let link = {
+			pathname: '/grade-home',
+			state
+		}
+		history.replace(link)
 	}
 
 	// 倒计时
@@ -371,9 +226,11 @@ const StudentHome = () => {
 				if (countDown > 0) {
 					setCountDown(countDown - 1)
 				} else {
+					let state = history.location.state
+					delete state.union_id
 					let link = {
 						pathname: '/grade-home',
-						state: history.location.state
+						state
 					}
 					history.replace(link)
 				}
@@ -382,25 +239,36 @@ const StudentHome = () => {
 		[ countDown, history ]
 	)
 
-	// 倒计时
+	// 默认执行
 	useEffect(
 		() => {
-			getCreated()
-			// const start = getCountDown()
-			return () => {
-				// clearInterval(start)
-			}
+			let searchKey = history.location.state
+			setSearchKey(searchKey)
+			getStuInfo(searchKey)
+			getGpComments({ ...searchKey, type: 2 })
+			getGpEcharts({ ...searchKey, type: 1 })
 		},
-		[getCountDown, getCreated]
+		[ history.location.state ]
 	)
 
-	const goBack = () => {
-		let link = {
-			pathname: '/grade-home',
-			state: searchKey
-		}
-		history.replace(link)
-	}
+	// 选取展示徽章
+	useEffect(
+		() => {
+			if (brandkey != null) {
+				let key = {
+					u_id: searchKey.u_id,
+					c_id: searchKey.c_id,
+					chuo_id: brandList[brandkey].chuo_id
+				}
+				getcinfo(key).then((res) => {
+					if (res.data.code == '200') {
+						setshowBrand(res.data.data)
+					}
+				})
+			}
+		},
+		[ brandList, brandkey, searchKey ]
+	)
 
 	return (
 		<div className={styles['student-home']}>
@@ -432,12 +300,7 @@ const StudentHome = () => {
 				<div className={styles['left']}>
 					<ul>
 						{menu.map((item, index) => (
-							<li
-								key={index}
-								onClick={() => {
-									setCountDown(60)
-									setActiveMenu(item.l_id)
-								}}>
+							<li key={index} onClick={() => openStudentInfo(item)}>
 								<img src={item.pic} alt={item.name} />
 							</li>
 						))}
@@ -453,59 +316,62 @@ const StudentHome = () => {
 							<img src={require('./../../assets/img/jike_pic.png')} alt="echarts背景" />
 						</div>
 						<ul className={styles['cut-box']}>
-							<li>
-								<img src={require('./../../assets/img/xuanzhuan_zuo_btn.png')} alt="上一项" />
+							<li onClick={() => nextBand('next')}>
+								<img src={require('./../../assets/img/xuanzhuan_zuo_btn.png')} alt="下一项" />
 							</li>
-							<li>
-								<img src={require('./../../assets/img/xuanzhuan_you_btn.png')} alt="下一项" />
+							<li onClick={() => nextBand('prev')}>
+								<img src={require('./../../assets/img/xuanzhuan_you_btn.png')} alt="上一项" />
 							</li>
 						</ul>
 					</div>
-					<div className={styles['select-brand']}>
-						<img
-							className={styles['brand-pic']}
-							src="http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg"
-							alt="徽章名字"
-						/>
-						<div className={styles['info']}>
-							<div className={styles['name']}>【保护自然】徽章</div>
-							<ul className={styles['num']}>
-								<li>
-									本学期已获得<span>12</span>次
-								</li>
-								<li>
-									共有<span>2</span>位老师颁发
-								</li>
-								<li>
-									班级同学平均获得<span>8</span>次
-								</li>
-							</ul>
-							<div className={styles['right-radius']} />
+					{showBrand ? (
+						<div className={styles['select-brand']}>
+							<img className={styles['brand-pic']} src={showBrand.chuo_src} alt="" />
+							<div className={styles['info']}>
+								<div className={styles['name']}>【{showBrand.chuo_name}】徽章</div>
+								<ul className={styles['num']}>
+									<li>
+										<img src={showBrand.chuo_src} alt="" />
+										本学期已获得<span>{showBrand.num1}</span>次
+									</li>
+									<li>
+										<img src={require('./../../assets/img/hztb.png')} alt="" />
+										共有<span>{showBrand.num2}</span>位老师颁发
+									</li>
+									<li>
+										<img src={require('./../../assets/img/hztb.png')} alt="" />
+										班级同学平均获得<span>{showBrand.num3}</span>次
+									</li>
+								</ul>
+								<div className={styles['right-radius']} />
+							</div>
 						</div>
-					</div>
+					) : null}
 				</div>
 				<div className={styles['right']}>
 					<div className={styles['title-box']}>
-						<div className={styles['today']}>今日获得徽章 {studInfo ? studInfo.today_stamp_count : 0}枚</div>
-						<div className={styles['total']}>累计获得 {studInfo ? studInfo.dcz : 0}枚</div>
+						<div className={styles['today']}>今日获得徽章 {studGrdt ? studGrdt.todaynum : 0}枚</div>
+						<div className={styles['total']}>累计获得 {studGrdt ? studGrdt.totalnum : 0}枚</div>
 					</div>
 					<div className={styles['main']}>
-						{studGrdt ? (
-							studGrdt.map((item, index) => {
+						{studGrdtComments ? (
+							studGrdtComments.map((item, index) => {
 								return (
 									<div key={index} className={styles['item']}>
-										<img className={styles['brand']} src={item.brand_pic} alt={item.brand} />
+										<img className={styles['brand']} src={item.chuo_src} alt="" />
 										<div className={styles['info-box']}>
-											<div className={styles['time']}>{item.time}</div>
-											<div className={styles['text']}>{item.text}</div>
+											<div className={styles['time']}>{item.grant_time}</div>
+											<div className={styles['text']}>{item.remark}</div>
 											<ul className={styles['pic-box']}>
-												{item.pic_box.map((e, i) => {
-													return (
-														<li key={i}>
-															<img src={e} alt="" />
-														</li>
-													)
-												})}
+												{item.img_src ? (
+													item.img_src.map((e, i) => {
+														return (
+															<li key={i}>
+																<img src={e} alt="" />
+															</li>
+														)
+													})
+												) : null}
 											</ul>
 										</div>
 									</div>
@@ -516,7 +382,14 @@ const StudentHome = () => {
 				</div>
 			</div>
 			{/* 弹窗 */}
-			{activeMenu ? <StudentInfo l_id={activeMenu} onClick={() => setActiveMenu(null)} /> : null}
+			{activeId ? (
+				<StudentInfo
+					id={activeId}
+					brands={activeBrands}
+					comments={activeComments}
+					close={() => setActiveId(null)}
+				/>
+			) : null}
 		</div>
 	)
 }

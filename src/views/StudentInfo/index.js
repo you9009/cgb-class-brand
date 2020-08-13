@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import styles from './index.module.css'
 
@@ -121,10 +121,25 @@ const comments = [
 	}
 ]
 
-const StudentInfo = (props) => {
+const StudentInfo = ({ id, close, brands, comments }) => {
 	const [ menu, setMenu ] = useState(menuList)
-	const [ commentList, setCommentList ] = useState(comments)
-	const [ brandList, setBrandList ] = useState(brands)
+
+	const [ start, setStar ] = useState(null)
+	const [ commentList, setCommentList ] = useState(null)
+	const [ brandList, setBrandList ] = useState(null)
+
+	useEffect(
+		() => {
+			if (brands) {
+				setStar(brands.shinenum)
+				setBrandList(brands.data)
+			}
+			if (comments) {
+				setCommentList(comments)
+			}
+		},
+		[ brands, comments ]
+	)
 
 	return (
 		<div className={styles['student-info-wrap']}>
@@ -132,7 +147,7 @@ const StudentInfo = (props) => {
 				<div className={styles['left']}>
 					<ul>
 						{menu.map((item, index) => (
-							<li key={index}>{props.l_id === item.l_id ? <img src={item.pic} alt={item.name} /> : null}</li>
+							<li key={index}>{id === item.l_id ? <img src={item.pic} alt={item.name} /> : null}</li>
 						))}
 					</ul>
 				</div>
@@ -140,58 +155,65 @@ const StudentInfo = (props) => {
 					<div className={styles['main']}>
 						<div className={styles['top']}>
 							<div className={styles['msg']}>
-								已收集 <span>10</span> 闪光点
+								已收集 <span>{start}</span> 闪光点
 							</div>
 							<ul>
-								{brandList.map((item, index) => {
-									return (
-										<li key={index}>
-											<img className={styles['brand']} src={item.name1} alt="" />
-											<div className={styles['info']}>
-												<div className={styles['time']}>{item.name2}</div>
-												<div className={styles['txt']}>{item.name3}</div>
-												<div className={styles['txt']}>{item.name4}</div>
-												<div className={styles['pic-box']}>
-													{item.pic_box ? (
-														item.pic_box.map((e, i) => <img key={i} src={e} alt="" />)
-													) : (
-														<div />
-													)}
+								{brandList ? (
+									brandList.map((item, index) => {
+										return (
+											<li key={index}>
+												<img className={styles['brand']} src={item.chuo_src} alt="" />
+												<div className={styles['info']}>
+													<div className={styles['time']}>{item.grant_time}</div>
+													<div className={styles['txt']}>{item.remark}</div>
+													<div className={styles['pic-box']}>
+														{item.img_src ? (
+															item.img_src.map((e, i) => <img key={i} src={e} alt="" />)
+														) : (
+															<div />
+														)}
+													</div>
 												</div>
-											</div>
-										</li>
-									)
-								})}
+											</li>
+										)
+									})
+								) : null}
 							</ul>
 						</div>
 						<div className={styles['bottom']}>
 							<ul className={styles['brand-box']}>
-								{commentList.map((item, index) => {
-									return (
-										<li key={index}>
-											<div className={styles['plan-header']}>
-												<span>光亮度：{item.name1}</span>
-												<div className={styles['plan-box']}>
-													<span style={{ width: '20%' }} />
+								{commentList ? (
+									commentList.map((item, index) => {
+										return (
+											<li key={index}>
+												<div
+													className={styles['plan-header']}
+													style={{ opacity: item.level / item.maxlevel }}>
+													<span className={styles['plan-level']}>光亮度：{item.level}</span>
+													<div className={styles['plan-box']}>
+														<span
+															style={{ width: item.level / item.maxlevel * 76 + '%' }}
+														/>
+													</div>
 												</div>
-											</div>
-											<div className={styles['brand-info']}>
-												<div className={styles['brand-name']}>
-													<img src={item.brand_pic} alt="徽章名" />
-													<p>{item.name}</p>
+												<div className={styles['brand-info']}>
+													<div className={styles['brand-name']}>
+														<img src={item.chuo_src} alt="徽章名" />
+														<p>{item.chuo_name}</p>
+													</div>
+													<div className={styles['info']}>
+														<div className={styles['name']}>{item.class_name}</div>
+														<div className={styles['msg']}>{item.remark}</div>
+													</div>
 												</div>
-												<div className={styles['info']}>
-													<div className={styles['name']}>{item.name2}</div>
-													<div className={styles['msg']}>{item.name3}</div>
+												<div className={styles['time-from']}>
+													<p>{item.grant_time}</p>
+													<p>{item.grantor_name}</p>
 												</div>
-											</div>
-											<div className={styles['time-from']}>
-												<p>{item.time}</p>
-												<p>{item.from}</p>
-											</div>
-										</li>
-									)
-								})}
+											</li>
+										)
+									})
+								) : null}
 							</ul>
 							<div className={styles['next-page']}>
 								<div className={styles['active']}>
@@ -215,7 +237,7 @@ const StudentInfo = (props) => {
 						</div>
 					</div>
 					<img
-						onClick={() => props.onClick()}
+						onClick={() => close()}
 						className={styles['close']}
 						src={require('./../../assets/img/guanbi_bt.png')}
 						alt="班级主页"

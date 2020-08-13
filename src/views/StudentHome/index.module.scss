@@ -157,6 +157,7 @@
     .select-brand {
       display: flex;
       flex-direction: row;
+      height: 170px;
       margin-top: -18px;
       padding: 30px;
       background: url('./../../assets/img/huizhang_bg.png') 0 0 no-repeat;
@@ -190,13 +191,22 @@
           li {
             font-size: 16px;
             font-weight: bold;
+            display: flex;
+            flex-direction: row;
             margin-right: 25px;
             color: #fff;
+
+            align-items: center;
             &:last-child {
               margin-right: 0;
             }
             span {
               color: #5ec3e9;
+            }
+            img {
+              width: 12px;
+              height: auto;
+              margin-right: 4px;
             }
           }
         }
