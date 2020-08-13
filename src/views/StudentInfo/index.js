@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import NextPage from './../NextPage'
 
 import styles from './index.module.css'
 
@@ -30,103 +31,14 @@ const menuList = [
 	}
 ]
 
-const brands = [
-	{
-		name1: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		name2: '2020年8月7日17:13:08',
-		name3: '王凌剑老师 颁发了【礼仪章】',
-		name4: '评价：“同学之间友好相处。遇到问题和矛盾，能主动礼让。”',
-		pic_box: [
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg'
-		]
-	},
-	{
-		name1: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		name2: '2020年8月7日17:13:08',
-		name3: '王凌剑老师 颁发了【礼仪章】',
-		name4: '评价：“同学之间友好相处。遇到问题和矛盾，能主动礼让。”'
-	},
-	{
-		name1: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		name2: '2020年8月7日17:13:08',
-		name3: '王凌剑老师 颁发了【礼仪章】'
-	},
-	{
-		name1: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		name2: '2020年8月7日17:13:08',
-		name3: '王凌剑老师 颁发了【礼仪章】',
-		name4: '评价：“同学之间友好相处。遇到问题和矛盾，能主动礼让。”',
-		pic_box: [
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-			'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg'
-		]
-	},
-	{
-		name1: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		name2: '2020年8月7日17:13:08',
-		name3: '王凌剑老师 颁发了【礼仪章】',
-		name4: '评价：“同学之间友好相处。遇到问题和矛盾，能主动礼让。”'
-	},
-	{
-		name1: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		name2: '2020年8月7日17:13:08',
-		name3: '王凌剑老师 颁发了【礼仪章】'
-	}
-]
-
-const comments = [
-	{
-		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		name: '道德与法治1',
-		name1: 3,
-		name2: '传承文化',
-		name3: '了解并传承传统文化和习俗，树立文化自信，拥有民族自豪感',
-		time: '2020年04月01日13:13:37',
-		from: '陈煦老师颁发'
-	},
-	{
-		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		name: '道德与法治2',
-		name1: 3,
-		name2: '传承文化',
-		name3: '了解并传承传统文化和习俗，树立文化自信，拥有民族自豪感',
-		time: '2020年04月01日13:13:37',
-		from: '陈煦老师颁发'
-	},
-	{
-		brand_pic: 'http://psylife-youjinjin.oss-cn-hangzhou.aliyuncs.com/img/timg.jpg',
-		name: '道德与法治3',
-		name1: 3,
-		name2: '传承文化',
-		name3: '了解并传承传统文化和习俗，树立文化自信，拥有民族自豪感',
-		time: '2020年04月01日13:13:37',
-		from: '陈煦老师颁发'
-	}
-]
-
 const StudentInfo = ({ id, close, brands, comments }) => {
 	const [ menu, setMenu ] = useState(menuList)
 
 	const [ start, setStar ] = useState(null)
-	const [ commentList, setCommentList ] = useState(null)
+	const [ page, setPage ] = useState(1)
+	const [ total, setTotal ] = useState(null)
 	const [ brandList, setBrandList ] = useState(null)
+	const [ commentList, setCommentList ] = useState(null)
 
 	useEffect(
 		() => {
@@ -135,11 +47,42 @@ const StudentInfo = ({ id, close, brands, comments }) => {
 				setBrandList(brands.data)
 			}
 			if (comments) {
-				setCommentList(comments)
+				setCommentList(comments.data)
+				setTotal(comments.count_page)
 			}
 		},
 		[ brands, comments ]
 	)
+
+	const nextP = (name) => {
+		let now = page
+		if (name == 'prev') {
+			if (now !== 1) {
+				now--
+			}
+		}
+		if (name == 'next') {
+			if (now !== total) {
+				now++
+			}
+		}
+		setPage(now)
+	}
+
+	const nextPageBox = () => {
+		let now = Math.ceil(total / 3)
+		return (
+			<div className={styles['next-page']}>
+				<div className={styles['active']} onClick={() => nextP('prev')}>
+					<img src={require('./../../assets/img/jiantou_zuo_btn.png')} alt="上一页" />
+				</div>
+				<ul>{now > 1 ? <NextPage page={page} total={now} cls={'active'} /> : null}</ul>
+				<div className={styles['active']} onClick={() => nextP('next')}>
+					<img src={require('./../../assets/img/jiantou_you_btn.png')} alt="上一页" />
+				</div>
+			</div>
+		)
+	}
 
 	return (
 		<div className={styles['student-info-wrap']}>
@@ -192,7 +135,7 @@ const StudentInfo = ({ id, close, brands, comments }) => {
 													<span className={styles['plan-level']}>光亮度：{item.level}</span>
 													<div className={styles['plan-box']}>
 														<span
-															style={{ width: item.level / item.maxlevel * 76 + '%' }}
+															style={{ width: item.level / item.maxlevel * 79 + '%' }}
 														/>
 													</div>
 												</div>
@@ -215,25 +158,7 @@ const StudentInfo = ({ id, close, brands, comments }) => {
 									})
 								) : null}
 							</ul>
-							<div className={styles['next-page']}>
-								<div className={styles['active']}>
-									<img src={require('./../../assets/img/jiantou_zuo_btn.png')} alt="上一页" />
-								</div>
-								<ul>
-									<li className={styles['active']}>1</li>
-									<li>2</li>
-									<li>3</li>
-									<li>4</li>
-									<li>5</li>
-									<li>6</li>
-									<li>7</li>
-									<li>……</li>
-									<li>15</li>
-								</ul>
-								<div className={styles['active']}>
-									<img src={require('./../../assets/img/jiantou_you_btn.png')} alt="上一页" />
-								</div>
-							</div>
+							{total > 3 ? nextPageBox : null}
 						</div>
 					</div>
 					<img

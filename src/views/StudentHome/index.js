@@ -141,7 +141,6 @@ const StudentHome = () => {
 
 	// 打开弹窗
 	const openStudentInfo = (item) => {
-		let isBool = true
 		let brandsdata = {
 			u_id: 159569,
 			type: 2,
@@ -161,8 +160,6 @@ const StudentHome = () => {
 					}
 					setActiveBrands(data)
 				}
-			} else {
-				isBool = false
 			}
 		})
 		let commentsdata = {
@@ -175,16 +172,11 @@ const StudentHome = () => {
 		getGpInfo(commentsdata).then((res) => {
 			if (res.data) {
 				if (res.data.code == '200') {
-					let data = res.data.data
-					setActiveComments(data)
+					setActiveComments(res.data)
 				}
-			} else {
-				isBool = false
 			}
 		})
-		if (isBool) {
-			setActiveId(item.l_id)
-		}
+		setActiveId(item.l_id)
 	}
 
 	// 切换当前徽章
@@ -219,10 +211,22 @@ const StudentHome = () => {
 		history.replace(link)
 	}
 
-	// 倒计时
-	const getCountDown = useCallback(
+	// 默认执行
+	useEffect(
 		() => {
-			setInterval(() => {
+			let searchKey = history.location.state
+			setSearchKey(searchKey)
+			getStuInfo(searchKey)
+			getGpComments({ ...searchKey, type: 2 })
+			getGpEcharts({ ...searchKey, type: 1 })
+		},
+		[ history.location.state ]
+	)
+
+	// 倒计时
+	useEffect(
+		() => {
+			const start = setInterval(() => {
 				if (countDown > 0) {
 					setCountDown(countDown - 1)
 				} else {
@@ -235,20 +239,11 @@ const StudentHome = () => {
 					history.replace(link)
 				}
 			}, 1000)
+			return () => {
+				clearInterval(start)
+			}
 		},
 		[ countDown, history ]
-	)
-
-	// 默认执行
-	useEffect(
-		() => {
-			let searchKey = history.location.state
-			setSearchKey(searchKey)
-			getStuInfo(searchKey)
-			getGpComments({ ...searchKey, type: 2 })
-			getGpEcharts({ ...searchKey, type: 1 })
-		},
-		[ history.location.state ]
 	)
 
 	// 选取展示徽章
@@ -285,22 +280,25 @@ const StudentHome = () => {
 						倒计时：<span>{countDown}</span> s
 					</p>
 				</div>
-				{studInfo ? (
-					<div className={styles['student-msg']}>
-						<img src={studInfo.u_logo_pic} alt="" />
-						<div className={styles['msg']}>
-							<p>{studInfo.u_name}</p>
-							<p>{studInfo.c_name}</p>
-						</div>
+				<div className={styles['student-msg']}>
+					<img src={studInfo ? studInfo.u_logo_pic : null} alt="" />
+					<div className={styles['msg']}>
+						<p>{studInfo ? studInfo.u_name : null}</p>
+						<p>{studInfo ? studInfo.c_name : null}</p>
 					</div>
-				) : null}
+				</div>
 			</div>
 			{/* 内容区 */}
 			<div className={styles['main-wrap']}>
 				<div className={styles['left']}>
 					<ul>
 						{menu.map((item, index) => (
-							<li key={index} onClick={() => openStudentInfo(item)}>
+							<li
+								key={index}
+								onClick={() => {
+									setCountDown(60)
+									openStudentInfo(item)
+								}}>
 								<img src={item.pic} alt={item.name} />
 							</li>
 						))}

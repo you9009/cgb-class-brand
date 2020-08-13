@@ -353,12 +353,7 @@ const GradeHome = () => {
 	// 默认渲染
 	useEffect(
 		() => {
-			let searchKey = {
-				...history.location.state,
-				c_id: 5678,
-				s_id: 47
-			}
-			// let searchKey = history.location.state
+			let searchKey = history.location.state
 			setSearchKey(searchKey)
 			setSelectRank(rankTitle[0])
 			getWeekEcharts(searchKey)
@@ -391,15 +386,9 @@ const GradeHome = () => {
 
 	// 去学生详情页
 	const linkToStudent = () => {
-		// let state = history.location.state
-		let state = {
-			c_id: 6191,
-			u_id: 159569,
-			union_id: 3333
-		}
 		let link = {
 			pathname: '/student-home',
-			state
+			state: searchKey
 		}
 		history.push(link)
 	}

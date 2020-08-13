@@ -2,6 +2,7 @@ import Login from './views/Login/index'
 import CheckClass from './views/CheckClass/index'
 import StudentHome from './views/StudentHome/index'
 import GradeHome from './views/GradeHome/index'
+import NextPage from './views/NextPage/index'
 
 export const router = [
 	{
@@ -25,6 +26,12 @@ export const router = [
 		path: '/student-home',
 		name: 'StudentHome',
 		component: StudentHome,
+		requireAuth: true
+	},
+	{
+		path: '/next-page',
+		name: 'NextPage',
+		component: NextPage,
 		requireAuth: true
 	}
 ]
