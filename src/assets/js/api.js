@@ -1,7 +1,7 @@
 import axios from 'axios'
 import CryptoJS from 'crypto-js'
 
-axios.defaults.baseURL = 'http://api.silaishi.com'
+axios.defaults.baseURL = 'https://api.silaishi.com'
 axios.defaults.timeout = 10000
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 
