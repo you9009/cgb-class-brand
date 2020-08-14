@@ -320,17 +320,19 @@ const GradeHome = () => {
 
 	// 获取班级相册列表
 	const openPhotoAlbum = (num) => {
-		SetPhotoAlbum(true)
-		let key = {
-			page: num,
-			pagesize: 6,
-			...searchKey
-		}
-		getClassPicList(key).then((res) => {
-			if (res.data.code == '100200') {
-				setPhotoAlbumData(res.data)
+		if (photoAlbum) {
+			SetPhotoAlbum(true)
+			let key = {
+				page: num,
+				pagesize: 6,
+				...searchKey
 			}
-		})
+			getClassPicList(key).then((res) => {
+				if (res.data.code == '100200') {
+					setPhotoAlbumData(res.data)
+				}
+			})
+		}
 	}
 
 	const getPhotoAlbum = (item) => {

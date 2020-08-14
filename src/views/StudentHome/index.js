@@ -150,15 +150,17 @@ const StudentHome = () => {
 			if (res.data) {
 				if (res.data.code == '200') {
 					let data = res.data.data
-					for (let i = 0; i < data.data.length; i++) {
-						const element = data.data[i]
-						if (element.img_src) {
-							element.img_src = data.data[i].img_src.split(',')
-						} else {
-							delete data.data[i].img_src
+					if (data.data) {
+						for (let i = 0; i < data.data.length; i++) {
+							const element = data.data[i]
+							if (element.img_src) {
+								element.img_src = data.data[i].img_src.split(',')
+							} else {
+								delete data.data[i].img_src
+							}
 						}
+						setActiveBrands(data)
 					}
-					setActiveBrands(data)
 				}
 			}
 		})
@@ -181,23 +183,25 @@ const StudentHome = () => {
 
 	// 切换当前徽章
 	const nextBand = (name) => {
-		let length = brandList.length - 1
-		let now = brandkey
-		if (name == 'prev') {
-			if (now == 0) {
-				now = length
-			} else {
-				now--
+		if (brandList) {
+			let length = brandList.length - 1
+			let now = brandkey
+			if (name == 'prev') {
+				if (now == 0) {
+					now = length
+				} else {
+					now--
+				}
 			}
-		}
-		if (name == 'next') {
-			if (now == length) {
-				now = 0
-			} else {
-				now++
+			if (name == 'next') {
+				if (now == length) {
+					now = 0
+				} else {
+					now++
+				}
 			}
+			setBrandKey(now)
 		}
-		setBrandKey(now)
 	}
 
 	// 返回上一页
@@ -226,22 +230,22 @@ const StudentHome = () => {
 	// 倒计时
 	useEffect(
 		() => {
-			const start = setInterval(() => {
-				if (countDown > 0) {
-					setCountDown(countDown - 1)
-				} else {
-					let state = history.location.state
-					delete state.union_id
-					let link = {
-						pathname: '/grade-home',
-						state
-					}
-					history.replace(link)
-				}
-			}, 1000)
-			return () => {
-				clearInterval(start)
-			}
+			// const start = setInterval(() => {
+			// 	if (countDown > 0) {
+			// 		setCountDown(countDown - 1)
+			// 	} else {
+			// 		let state = history.location.state
+			// 		delete state.union_id
+			// 		let link = {
+			// 			pathname: '/grade-home',
+			// 			state
+			// 		}
+			// 		history.replace(link)
+			// 	}
+			// }, 1000)
+			// return () => {
+			// 	clearInterval(start)
+			// }
 		},
 		[ countDown, history ]
 	)

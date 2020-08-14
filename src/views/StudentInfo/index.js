@@ -34,7 +34,7 @@ const menuList = [
 const StudentInfo = ({ id, close, brands, comments }) => {
 	const [ menu, setMenu ] = useState(menuList)
 
-	const [ start, setStar ] = useState(null)
+	const [ start, setStar ] = useState(0)
 	const [ page, setPage ] = useState(1)
 	const [ total, setTotal ] = useState(null)
 	const [ brandList, setBrandList ] = useState(null)
