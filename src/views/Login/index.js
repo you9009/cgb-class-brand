@@ -18,7 +18,7 @@ const Login = () => {
 		() => {
 			setActive(!!userName && !!PassWord)
 		},
-		[ PassWord, userName ]
+		[PassWord, history.location, userName]
 	)
 
 	// 登录

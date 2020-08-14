@@ -78,8 +78,9 @@
     }
     ul {
       display: flex;
-      overflow: hidden;
+      overflow-x: auto;
       flex-direction: row;
+      height: 330px;
       margin-top: 30px;
 
       align-items: flex-start;

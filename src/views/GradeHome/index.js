@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useHistory } from 'react-router-dom'
 import echarts from 'echarts'
 
@@ -148,9 +148,8 @@ const rank = [
 
 const options = {
 	animation: false,
-	color: '#fff',
 	grid: {
-		left: '2%',
+		left: '8%',
 		right: '2%',
 		bottom: '5%',
 		top: '4%',
@@ -158,48 +157,61 @@ const options = {
 	},
 	xAxis: {
 		type: 'category',
-		data: [],
-		axisLabel: {
-			color: '#fff'
-		},
+		axisTick: { show: false },
 		axisLine: {
 			lineStyle: {
 				width: 4,
-				opacity: 0.1,
-				type: 'solid'
+				color: '#b3bee9'
 			}
-		},
-		axisTick: {
-			show: false
 		}
 	},
 	yAxis: {
 		type: 'value',
+		name: '数量（枚）',
+		nameTextStyle: {
+			color: '#b3bee9'
+		},
+		nameLocation: 'middle',
 		axisLabel: {
 			show: false
 		},
 		axisTick: {
 			show: false
 		},
+		splitLine: {
+			lineStyle: {
+				width: 2,
+				type: 'dashed',
+				opacity: 0.1
+			}
+		},
 		axisLine: {
 			lineStyle: {
 				width: 4,
-				color: 'rgba(255, 255, 255, .1)',
-				type: 'solid'
-			}
-		},
-		splitLine: {
-			lineStyle: {
-				opacity: 0.1,
-				type: 'dashed',
-				width: 2
+				color: '#b3bee9'
 			}
 		}
 	},
 	series: [
 		{
 			data: [],
-			type: 'line'
+			type: 'line',
+			symbolSize: 10,
+			symbol: 'circle',
+			smooth: true,
+			lineStyle: {
+				color: '#fff',
+				width: 4
+			},
+			itemStyle: {
+				borderWidth: 4,
+				borderColor: '#fff',
+				color: '#fe566f'
+			},
+			label: {
+				show: true,
+				color: '#fff'
+			}
 		}
 	]
 }
@@ -228,6 +240,7 @@ const GradeHome = () => {
 	const [ Time, SetTime ] = useState(0)
 	const [ photoAlbumData, setPhotoAlbumData ] = useState(0)
 	const [ cover, setCover ] = useState(null)
+	const card = useRef()
 
 	// 获取班级详情数据
 	const getTodayInfo = (key) => {
@@ -285,6 +298,7 @@ const GradeHome = () => {
 		getWeeknum(key).then((res) => {
 			if (res.data.code == '200') {
 				SetTotalNum(res.data.data.totalNum)
+				let week = { d1: '周一', d2: '周二', d3: '周三', d4: '周四', d5: '周五', d6: '周六', d7: '周日' }
 				let title = []
 				let data = []
 				let isBool = false
@@ -294,7 +308,7 @@ const GradeHome = () => {
 						const element = list[k]
 						if (k !== 'totalNum') {
 							isBool = true
-							title.push(k)
+							title.push(week[k])
 							data.push(element)
 						}
 					}
@@ -320,19 +334,17 @@ const GradeHome = () => {
 
 	// 获取班级相册列表
 	const openPhotoAlbum = (num) => {
-		if (photoAlbum) {
-			SetPhotoAlbum(true)
-			let key = {
-				page: num,
-				pagesize: 6,
-				...searchKey
-			}
-			getClassPicList(key).then((res) => {
-				if (res.data.code == '100200') {
-					setPhotoAlbumData(res.data)
-				}
-			})
+		SetPhotoAlbum(true)
+		let key = {
+			page: num,
+			pagesize: 6,
+			...searchKey
 		}
+		getClassPicList(key).then((res) => {
+			if (res.data.code == '100200') {
+				setPhotoAlbumData(res.data)
+			}
+		})
 	}
 
 	const getPhotoAlbum = (item) => {
@@ -357,29 +369,38 @@ const GradeHome = () => {
 		() => {
 			let searchKey = history.location.state
 			setSearchKey(searchKey)
-			setSelectRank(rankTitle[0])
 			getWeekEcharts(searchKey)
 			getTodayInfo(searchKey)
 			getComment(searchKey)
 			getPhotoAlbum(searchKey)
-
-			// 获取时间 —— 60秒刷新一次
-			const getTime = () => {
-				let time = new Date()
-				let hours = time.getHours()
-				let minutes = time.getMinutes()
-				SetTime(addZero(hours) + ':' + addZero(minutes))
-			}
-			getTime()
-			const start = setInterval(() => {
-				getTime()
-			}, 60 * 1000)
-			return () => {
-				clearInterval(start)
-			}
 		},
-		[ history.location.state, rankTitle, setSelectRank ]
+		[ history.location.state ]
 	)
+
+	// 选取默认的学生荣誉榜
+	useEffect(
+		() => {
+			setSelectRank(rankTitle[0])
+		},
+		[ rankTitle, setSelectRank ]
+	)
+
+	// 获取时间 —— 60秒刷新一次
+	useEffect(() => {
+		const getTime = () => {
+			let time = new Date()
+			let hours = time.getHours()
+			let minutes = time.getMinutes()
+			SetTime(addZero(hours) + ':' + addZero(minutes))
+		}
+		getTime()
+		const start = setInterval(() => {
+			getTime()
+		}, 60 * 1000)
+		return () => {
+			clearInterval(start)
+		}
+	}, [])
 
 	// 去班级选择页面
 	const linkToSelect = () => {
@@ -387,13 +408,59 @@ const GradeHome = () => {
 	}
 
 	// 去学生详情页
-	const linkToStudent = () => {
-		let link = {
-			pathname: '/student-home',
-			state: searchKey
-		}
-		history.push(link)
-	}
+	const linkToStudent = useCallback(
+		(key) => {
+			if (key) {
+				let state = searchKey
+				state.union_id = key
+				let link = {
+					pathname: '/student-home',
+					state
+				}
+				history.push(link)
+			}
+		},
+		[ history, searchKey ]
+	)
+
+	// 获取焦点，清空数据
+	useEffect(
+		() => {
+			const time = () => {
+				setInterval(() => {
+					if (card.current) {
+						card.current.value = ''
+						card.current.focus()
+					} else {
+						clearInterval(time)
+					}
+				}, 1000)
+			}
+			if (history.location.pathname == '/grade-home') {
+				time()
+			}
+			return () => {
+				clearInterval(time)
+			}
+		},
+		[ history.location ]
+	)
+
+	// 获取数据
+	useEffect(
+		() => {
+			const changeKeyDown = (event) => {
+				if (event.keyCode == 13) {
+					linkToStudent(card.current.value)
+				}
+			}
+			window.addEventListener('keydown', changeKeyDown)
+			return () => {
+				window.removeEventListener('keydown', changeKeyDown)
+			}
+		},
+		[ linkToStudent ]
+	)
 
 	return (
 		<div className={styles['grade-wrap']}>
@@ -451,9 +518,11 @@ const GradeHome = () => {
 							</div>
 						</div>
 					</div>
-					<div className={styles['card']} onClick={linkToStudent}>
+					<div className={styles['card']}>
 						<p>请把学生卡放置在刷卡区</p>
 						<p>查看个人光谱</p>
+						{/* 刷卡 */}
+						<input id="card-id" type="text" autoFocus ref={card} />
 					</div>
 				</div>
 				<div className={styles['grade-middle']}>

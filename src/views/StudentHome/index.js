@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import echarts from 'echarts'
 
@@ -37,7 +37,7 @@ const menuList = [
 
 const StudentHome = () => {
 	let history = useHistory()
-	const [ countDown, setCountDown ] = useState(60)
+	const [ countDown, setCountDown ] = useState(10)
 	const [ menu, setMenu ] = useState(menuList)
 
 	const [ searchKey, setSearchKey ] = useState(null)
@@ -77,19 +77,21 @@ const StudentHome = () => {
 		getGpInfo(key).then((res) => {
 			if (res.data.code == '200') {
 				let data = res.data.data
-				setStudGrdt({
-					todaynum: data.todaynum,
-					totalnum: data.totalnum
-				})
-				for (let i = 0; i < data.data.length; i++) {
-					const element = data.data[i]
-					if (element.img_src) {
-						element.img_src = data.data[i].img_src.split(',')
-					} else {
-						delete data.data[i].img_src
+				if (data.data) {
+					setStudGrdt({
+						todaynum: data.todaynum,
+						totalnum: data.totalnum
+					})
+					for (let i = 0; i < data.data.length; i++) {
+						const element = data.data[i]
+						if (element.img_src) {
+							element.img_src = data.data[i].img_src.split(',')
+						} else {
+							delete data.data[i].img_src
+						}
 					}
+					setStudGrdtComments(data.data)
 				}
-				setStudGrdtComments(data.data)
 			}
 		})
 	}
@@ -142,7 +144,7 @@ const StudentHome = () => {
 	// 打开弹窗
 	const openStudentInfo = (item) => {
 		let brandsdata = {
-			u_id: 159569,
+			u_id: searchKey.u_id,
 			type: 2,
 			l_id: item.l_id
 		}
@@ -165,7 +167,7 @@ const StudentHome = () => {
 			}
 		})
 		let commentsdata = {
-			u_id: 159569,
+			u_id: searchKey.u_id,
 			type: 1,
 			l_id: item.l_id,
 			page: 1,
@@ -215,37 +217,49 @@ const StudentHome = () => {
 		history.replace(link)
 	}
 
-	// 默认执行
+	// 获取用户信息
 	useEffect(
 		() => {
 			let searchKey = history.location.state
 			setSearchKey(searchKey)
 			getStuInfo(searchKey)
-			getGpComments({ ...searchKey, type: 2 })
-			getGpEcharts({ ...searchKey, type: 1 })
 		},
 		[ history.location.state ]
+	)
+
+	// 获取默认数据
+	useEffect(
+		() => {
+			if (studInfo) {
+				let key = searchKey
+				key.u_id = studInfo.u_id
+				setSearchKey(key)
+				getGpComments({ ...searchKey, type: 2, u_id: searchKey.u_id })
+				getGpEcharts({ ...searchKey, type: 1, u_id: searchKey.u_id })
+			}
+		},
+		[ searchKey, studInfo ]
 	)
 
 	// 倒计时
 	useEffect(
 		() => {
-			// const start = setInterval(() => {
-			// 	if (countDown > 0) {
-			// 		setCountDown(countDown - 1)
-			// 	} else {
-			// 		let state = history.location.state
-			// 		delete state.union_id
-			// 		let link = {
-			// 			pathname: '/grade-home',
-			// 			state
-			// 		}
-			// 		history.replace(link)
-			// 	}
-			// }, 1000)
-			// return () => {
-			// 	clearInterval(start)
-			// }
+			const start = setInterval(() => {
+				if (countDown > 0) {
+					setCountDown(countDown - 1)
+				} else {
+					let state = history.location.state
+					delete state.union_id
+					let link = {
+						pathname: '/grade-home',
+						state
+					}
+					history.replace(link)
+				}
+			}, 1000)
+			return () => {
+				clearInterval(start)
+			}
 		},
 		[ countDown, history ]
 	)
@@ -260,8 +274,12 @@ const StudentHome = () => {
 					chuo_id: brandList[brandkey].chuo_id
 				}
 				getcinfo(key).then((res) => {
-					if (res.data.code == '200') {
-						setshowBrand(res.data.data)
+					let data = res.data
+					if (data) {
+						if (data.code == '200') {
+							data.data.num3 = data.data.num3.slice(0, 4)
+							setshowBrand(data.data)
+						}
 					}
 				})
 			}
@@ -389,7 +407,10 @@ const StudentHome = () => {
 					id={activeId}
 					brands={activeBrands}
 					comments={activeComments}
-					close={() => setActiveId(null)}
+					close={() => {
+						setCountDown(60)
+						setActiveId(null)
+					}}
 				/>
 			) : null}
 		</div>
