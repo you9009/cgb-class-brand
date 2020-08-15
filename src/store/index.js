@@ -1,4 +1,4 @@
-import api from '../assets/js/api'
+import api from './api'
 
 // 登录
 export const login = (key) => {

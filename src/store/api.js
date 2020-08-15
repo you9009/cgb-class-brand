@@ -5,31 +5,29 @@ axios.defaults.baseURL = 'https://api.silaishi.com'
 axios.defaults.timeout = 10000
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 
-export default {
-	get(url, params) {
-		return axios({
-			method: 'get',
-			url,
-			params: getApiUtils(params)
-		})
-	},
+export const get = async (url, params) => {
+	return await axios({
+		method: 'get',
+		url,
+		params: getApiUtils(params)
+	})
+}
 
-	post(url, data) {
-		return axios({
-			method: 'post',
-			url,
-			data: getApiUtils(data),
-			transformRequest: [
-				function(data) {
-					let ret = ''
-					for (let it in data) {
-						ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-					}
-					return ret.slice(0, -1)
+export const post = async (url, data) => {
+	return await axios({
+		method: 'post',
+		url,
+		data: getApiUtils(data),
+		transformRequest: [
+			function(data) {
+				let ret = ''
+				for (let it in data) {
+					ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
 				}
-			]
-		})
-	}
+				return ret.slice(0, -1)
+			}
+		]
+	})
 }
 
 const getApiUtils = (data) => {
